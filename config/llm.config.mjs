@@ -1,4 +1,4 @@
-const MODEL_NAME = "Wizard-Vicuna-13B-Uncensored.ggml.q5_1.bin";
+const MODEL_NAME = "wizard-mega-13B.ggml.q5_1.bin";
 
 export const llmConfig = {
   loadConfig: {
