@@ -8,6 +8,7 @@
     "test:watch": "npm run test -- --watch .",
     "test": "node --test --test-reporter spec",
     "dev": "nodemon ./index.mjs",
+    "fetch-openai-oas": "node ./scripts/fetch-openai-oas.mjs",
     "postinstall": "patch-package"
   },
   "keywords": [
