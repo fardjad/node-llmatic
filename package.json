@@ -1,0 +1,45 @@
+{
+  "name": "llm-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "lint": "eslint --ext .mjs .",
+    "fix": "prettier --write . && eslint --ext .mjs --fix .",
+    "test:watch": "npm run test -- --watch .",
+    "test": "node --test --test-reporter spec",
+    "dev": "nodemon ./index.mjs",
+    "postinstall": "patch-package"
+  },
+  "keywords": [
+    "openai",
+    "api",
+    "llama",
+    "llm",
+    "llama-api"
+  ],
+  "author": "Fardjad Davari <public@fardjad.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/static": "^6.10.1",
+    "@llama-node/llama-cpp": "^0.1.5",
+    "ajv": "^8.12.0",
+    "awilix": "^8.0.1",
+    "event-iterator": "^2.0.0",
+    "fastify": "^4.17.0",
+    "fastify-openapi-glue": "^4.1.4",
+    "fastify-sse-v2": "^3.1.0",
+    "glob": "^10.2.5",
+    "llama-node": "^0.1.5",
+    "nodemon": "^2.0.22",
+    "patch-package": "^7.0.0",
+    "swagger-ui-dist": "^4.18.3",
+    "traverse": "^0.6.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-xo": "^0.43.1",
+    "eslint-plugin-unicorn": "^47.0.0",
+    "prettier": "^2.8.8"
+  }
+}

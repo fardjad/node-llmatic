@@ -1,0 +1,9 @@
+{
+  "extends": ["xo", "plugin:unicorn/recommended", "prettier"],
+  "rules": {
+    "eqeqeq": ["error", "smart"],
+    "no-eq-null": "off",
+    "unicorn/no-null": "off",
+    "unicorn/prefer-event-target": "off"
+  }
+}
