@@ -120,26 +120,71 @@ Then run the main script:
 npm start
 ```
 
-It should display an output similar to this:
+<details>
+  <summary>Expand this to see the sample output</summary>
 
 ```
-I'm looking for a name that is catchy, memorable, and conveys the idea of colorful socks.
-
-Some ideas I've come up with:
-- Socktopus
-- Rainbow Road
-- Kaleidoscope Socks
-- Sockadoodle
-- Socktastic
-- Socktropolis
-- Socktopia
-- Socktastic
-- Sockadoodle
-- Socktropolis
-- Socktopia
-
-What do you think? Any other ideas?
+[chain/start] [1:chain:llm_chain] Entering Chain run with input: {
+  "humanInput": "Rememeber that this is a demo of LLMatic with LangChain.",
+  "history": ""
+}
+[llm/start] [1:chain:llm_chain > 2:llm:openai] Entering LLM run with input: {
+  "prompts": [
+    "A chat between a curious user and an artificial intelligence assistant.\nThe assistant gives helpful, detailed, and polite answers to the user's questions.\n\n\nHuman: Rememeber that this is a demo of LLMatic with LangChain.\nAI:"
+  ]
+}
+[llm/end] [1:chain:llm_chain > 2:llm:openai] [5.92s] Exiting LLM run with output: {
+  "generations": [
+    [
+      {
+        "text": " Yes, I understand. I am ready to assist you with your queries.",
+        "generationInfo": {
+          "finishReason": "stop",
+          "logprobs": null
+        }
+      }
+    ]
+  ],
+  "llmOutput": {
+    "tokenUsage": {}
+  }
+}
+[chain/end] [1:chain:llm_chain] [5.92s] Exiting Chain run with output: {
+  "text": " Yes, I understand. I am ready to assist you with your queries."
+}
+[chain/start] [1:chain:llm_chain] Entering Chain run with input: {
+  "humanInput": "What did I ask you to remember?",
+  "history": "Human: Rememeber that this is a demo of LLMatic with LangChain.\nAI:  Yes, I understand. I am ready to assist you with your queries."
+}
+[llm/start] [1:chain:llm_chain > 2:llm:openai] Entering LLM run with input: {
+  "prompts": [
+    "A chat between a curious user and an artificial intelligence assistant.\nThe assistant gives helpful, detailed, and polite answers to the user's questions.\n\nHuman: Rememeber that this is a demo of LLMatic with LangChain.\nAI:  Yes, I understand. I am ready to assist you with your queries.\nHuman: What did I ask you to remember?\nAI:"
+  ]
+}
+[llm/end] [1:chain:llm_chain > 2:llm:openai] [6.51s] Exiting LLM run with output: {
+  "generations": [
+    [
+      {
+        "text": " You asked me to remember that this is a demo of LLMatic with LangChain.",
+        "generationInfo": {
+          "finishReason": "stop",
+          "logprobs": null
+        }
+      }
+    ]
+  ],
+  "llmOutput": {
+    "tokenUsage": {}
+  }
+}
+[chain/end] [1:chain:llm_chain] [6.51s] Exiting Chain run with output: {
+  "text": " You asked me to remember that this is a demo of LLMatic with LangChain."
+}
 ```
+
+</details>
+
+<hr>
 
 To run the Python example, first install the dependencies:
 
@@ -154,7 +199,8 @@ Then run the main script:
 python3 main.py
 ```
 
-It should display an output similar to this:
+<details>
+  <summary>Expand this to see the sample output</summary>
 
 ```
 > Entering new LLMChain chain...
@@ -163,9 +209,25 @@ A chat between a curious user and an artificial intelligence assistant.
 The assistant gives helpful, detailed, and polite answers to the user's questions.
 
 
-USER: Hello, how are you?
-ASSISTANT:
+Human: Rememeber that this is a demo of LLMatic with LangChain.
+AI:
 
 > Finished chain.
- I am doing well, thank you for asking. How can I assist you today?
+ Yes, I understand. I am ready to assist you with your queries.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+A chat between a curious user and an artificial intelligence assistant.
+The assistant gives helpful, detailed, and polite answers to the user's questions.
+
+Human: Rememeber that this is a demo of LLMatic with LangChain.
+AI:  Yes, I understand. I am ready to assist you with your queries.
+Human: What did I ask you to remember?
+AI:
+
+> Finished chain.
+ You asked me to remember that this is a demo of LLMatic with LangChain.
 ```
+
+</details>

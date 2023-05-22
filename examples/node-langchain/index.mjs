@@ -1,6 +1,7 @@
 import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
+import { BufferMemory } from "langchain/memory";
 
 const model = new OpenAI(
   {
@@ -13,12 +14,28 @@ const model = new OpenAI(
   }
 );
 
-const template = "What is a good name for a company that makes {product}?";
+const template = `A chat between a curious user and an artificial intelligence assistant.
+The assistant gives helpful, detailed, and polite answers to the user's questions.
+
+{history}
+Human: {humanInput}
+AI:`;
+
 const prompt = new PromptTemplate({
+  inputVariables: ["history", "humanInput"],
   template,
-  inputVariables: ["product"],
 });
 
-const chain = new LLMChain({ llm: model, prompt });
-const response = await chain.call({ product: "colorful socks" });
-console.log(response.text);
+const chatgptChain = new LLMChain({
+  llm: model,
+  prompt,
+  verbose: true,
+  memory: new BufferMemory(),
+});
+
+await chatgptChain.predict({
+  humanInput: "Rememeber that this is a demo of LLMatic with LangChain.",
+});
+await chatgptChain.predict({
+  humanInput: "What did I ask you to remember?",
+});
