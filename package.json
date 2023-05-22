@@ -1,12 +1,13 @@
 {
-  "name": "llm-api",
-  "version": "1.0.0",
-  "description": "",
+  "name": "llmatic",
+  "version": "0.1.0",
+  "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "scripts": {
     "lint": "eslint --ext .mjs .",
     "fix": "prettier --write . && eslint --ext .mjs --fix .",
     "test:watch": "npm run test -- --watch .",
     "test": "node --test --test-reporter spec",
+    "start": "node ./index.mjs",
     "dev": "nodemon ./index.mjs",
     "fetch-openai-oas": "node ./scripts/fetch-openai-oas.mjs",
     "postinstall": "patch-package"
@@ -14,9 +15,8 @@
   "keywords": [
     "openai",
     "api",
-    "llama",
     "llm",
-    "llama-api"
+    "llama"
   ],
   "author": "Fardjad Davari <public@fardjad.com>",
   "license": "MIT",
@@ -25,6 +25,7 @@
     "@llama-node/llama-cpp": "^0.1.5",
     "ajv": "^8.12.0",
     "awilix": "^8.0.1",
+    "envalid": "^7.3.1",
     "event-iterator": "^2.0.0",
     "fastify": "^4.17.0",
     "fastify-openapi-glue": "^4.1.4",

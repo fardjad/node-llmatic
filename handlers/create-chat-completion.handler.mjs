@@ -20,6 +20,7 @@ export default class CreateChatCompletionHandler {
     return `${rawChatText}\nassistant:`;
   }
 
+  // FIXME: This is a mess. Refactor.
   async handle(request, reply) {
     const {
       model,

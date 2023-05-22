@@ -14,6 +14,7 @@ export class LLMService {
   #invocationConfig;
   #loaded = false;
 
+  // TODO: Configure this via environment variables
   constructor({ [diTokens.llmConfig]: { loadConfig, invocationConfig } }) {
     assert.equal(
       loadConfig.path instanceof URL,

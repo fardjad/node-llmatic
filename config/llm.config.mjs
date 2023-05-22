@@ -1,10 +1,18 @@
-const MODEL_NAME = "wizard-mega-13B.ggml.q5_1.bin";
+import { cleanEnv, str, num } from "envalid";
+
+const environment = cleanEnv(process.env, {
+  LLMATIC_MODEL_NAME: str(),
+  LLMATIC_N_THREADS: num({ default: 8 }),
+});
 
 export const llmConfig = {
   loadConfig: {
-    path: new URL(`../models/${MODEL_NAME}`, import.meta.url),
+    path: new URL(
+      `../models/${environment.LLMATIC_MODEL_NAME}`,
+      import.meta.url
+    ),
   },
   invocationConfig: {
-    nThreads: 8,
+    nThreads: environment.LLMATIC_N_THREADS,
   },
 };

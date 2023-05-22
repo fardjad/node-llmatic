@@ -93,6 +93,8 @@ const configureOpenapiGlue = async ({
 
   fastifyServer.register(openapiGlue, {
     specification: serverConfig.oasDocument,
+    // TODO: Make this configurable
+    prefix: "/v1",
     service,
     securityHandlers: {},
   });

@@ -12,6 +12,7 @@ export default class CreateCompletionHandler {
     this.#llmService = llmService;
   }
 
+  // FIXME: This is a mess. Refactor.
   async handle(request, reply) {
     const {
       model,
