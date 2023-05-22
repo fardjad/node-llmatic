@@ -6,12 +6,13 @@ import { randomUUID } from "node:crypto";
 export default class CreateChatCompletionHandler {
   static operationId = "createChatCompletion";
 
-  #llmService;
+  #llmAdapter;
 
-  constructor({ [diTokens.llmService]: llmService }) {
-    this.#llmService = llmService;
+  constructor({ [diTokens.llmAdapter]: llmAdapter }) {
+    this.#llmAdapter = llmAdapter;
   }
 
+  // TODO: Move this to llm-adapter
   #formatChatLog(chat = []) {
     const rawChatText = chat
       .map((item) => `${item.role}: ${item.content}`)
@@ -63,7 +64,7 @@ export default class CreateChatCompletionHandler {
     };
 
     const tokens = [];
-    const completionIterator = await this.#llmService.createCompletion(config);
+    const completionIterator = await this.#llmAdapter.createCompletion(config);
 
     const id = randomUUID();
     const created = Date.now();
@@ -72,6 +73,7 @@ export default class CreateChatCompletionHandler {
       return reply.sse(
         (async function* () {
           for await (const { text, finishReason } of completionIterator) {
+            // TODO: Move this to llm-adapter
             if (text === "\n\n<end>\n") {
               break;
             }
@@ -102,6 +104,7 @@ export default class CreateChatCompletionHandler {
     for await (const { text, finishReason } of completionIterator) {
       finish_reason = finishReason;
 
+      // TODO: Move this to llm-adapter
       if (text === "\n\n<end>\n") {
         break;
       }

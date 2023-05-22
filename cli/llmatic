@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+/* eslint-disable unicorn/prefer-module */
+
+const path = require("node:path");
+const childProcess = require("node:child_process");
+
+childProcess.fork(
+  path.join(__dirname, "./llmatic.mjs"),
+  process.argv.slice(2),
+  {}
+);

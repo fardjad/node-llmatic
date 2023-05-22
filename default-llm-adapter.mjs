@@ -1,65 +1,29 @@
-import { cpus } from "node:os";
 import { EventEmitter } from "node:events";
-import { fileURLToPath } from "node:url";
-import assert from "node:assert";
+import path from "node:path";
 import { EventIterator } from "event-iterator";
-
 import { LLamaCpp } from "llama-node/dist/llm/llama-cpp.js";
 import { LLM as LlamaNode } from "llama-node";
-import { diTokens } from "../container.mjs";
+import { diTokens } from "./container.mjs";
 
-export class LLMService {
+export default class DefaultLLMAdapter {
   #llamaNode = new LlamaNode(LLamaCpp);
-  #config;
-  #invocationConfig;
+  #llmConfig;
   #loaded = false;
 
-  // TODO: Configure this via environment variables
-  constructor({ [diTokens.llmConfig]: { loadConfig, invocationConfig } }) {
-    assert.equal(
-      loadConfig.path instanceof URL,
-      true,
-      "loadConfig.path must be a URL"
-    );
-
-    this.#config = {
-      enableLogging: false,
-      nParts: 1,
-      nGpuLayers: 0,
-      f16Kv: false,
-      logitsAll: false,
-      vocabOnly: false,
-      seed: 0,
-      useMlock: true,
-      embedding: true,
-      useMmap: true,
-
-      nCtx: 4096,
-
-      ...loadConfig,
-      path: fileURLToPath(loadConfig.path),
-    };
-
-    this.#invocationConfig = {
-      nThreads: cpus().length,
-      nTokPredict: Number.POSITIVE_INFINITY,
-      topK: 40,
-      topP: 0.95,
-      temp: 0,
-      repeatPenalty: 1.1,
-
-      ...invocationConfig,
-    };
+  constructor({ [diTokens.llmConfig]: llmConfig }) {
+    this.#llmConfig = llmConfig;
   }
 
-  async #load() {
+  async load() {
     if (this.#loaded) return;
 
-    await this.#llamaNode.load(this.#config);
+    console.log(this.#llmConfig);
+
+    await this.#llamaNode.load(this.#llmConfig);
     this.#loaded = true;
   }
 
-  #createCompletionEventEmitter(config) {
+  #createCompletionEventEmitter(completionConfig) {
     const eventEmitter = new EventEmitter();
     const abortController = new AbortController();
     let numberOfGeneratedTokens = 0;
@@ -68,14 +32,15 @@ export class LLMService {
     this.#llamaNode
       .createCompletion(
         {
-          ...this.#invocationConfig,
-          ...config,
+          ...this.#llmConfig,
+          ...completionConfig,
+          // Limiting the number of generated tokens here causes createCompletion to never finish
           nTokPredict: Number.POSITIVE_INFINITY,
         },
         (response) => {
           numberOfGeneratedTokens += 1;
 
-          if (numberOfGeneratedTokens >= config.nTokPredict) {
+          if (numberOfGeneratedTokens >= completionConfig.nTokPredict) {
             finishReason = "length";
           }
 
@@ -102,10 +67,10 @@ export class LLMService {
     return eventEmitter;
   }
 
-  async createCompletion(config) {
-    await this.#load();
+  async createCompletion(completionConfig) {
+    await this.load();
 
-    const eventEmitter = this.#createCompletionEventEmitter(config);
+    const eventEmitter = this.#createCompletionEventEmitter(completionConfig);
 
     return new EventIterator(({ push, stop, fail }) => {
       eventEmitter.on("data", push);
@@ -118,12 +83,16 @@ export class LLMService {
     });
   }
 
-  async getEmbedding(config) {
-    await this.#load();
+  async getEmbedding(embedingConfig) {
+    await this.load();
 
     return this.#llamaNode.getEmbedding({
-      ...this.#invocationConfig,
-      ...config,
+      ...this.#llmConfig,
+      ...embedingConfig,
     });
+  }
+
+  get modelName() {
+    return path.basename(this.#llmConfig.path);
   }
 }

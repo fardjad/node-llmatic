@@ -1,10 +1,6 @@
 import awilix from "awilix";
 import { createFastifyServer } from "./fastify-server-factory.mjs";
-import { llmConfig } from "./config/llm.config.mjs";
-import { LLMService } from "./services/llm.service.mjs";
-import { modelConfig } from "./config/model.config.mjs";
-import { ModelService } from "./services/model.service.mjs";
-import { serverConfig } from "./config/server.config.mjs";
+import DefaultLLMAdapter from "./default-llm-adapter.mjs";
 
 /**
  * Use these tokens for registrations and resolutions to avoid the problems of
@@ -12,14 +8,8 @@ import { serverConfig } from "./config/server.config.mjs";
  */
 export const diTokens = {
   container: "container",
-
-  modelConfig: "modelConfig",
-  modelService: "modelService",
-
   llmConfig: "llmConfig",
-  llmService: "llmService",
-
-  serverConfig: "serverConfig",
+  llmAdapter: "llmApatper",
   fastifyServer: "fastifyServer",
 };
 
@@ -65,29 +55,20 @@ export const createContainer = async (registerationOverrides = []) => {
     injectionMode: awilix.InjectionMode.PROXY,
   });
 
-  const registrations = [
+  const orderedRegistrations = [
     { token: diTokens.container, resolver: () => awilix.asValue(container) },
-
     {
-      token: diTokens.modelConfig,
-      resolver: () => awilix.asValue(modelConfig),
+      token: diTokens.llmConfig,
+      resolver() {
+        throw new Error("llmConfig must be overridden");
+      },
     },
     {
-      token: diTokens.modelService,
+      token: diTokens.llmAdapter,
       resolver: () =>
-        awilix.asClass(ModelService, { lifetime: awilix.Lifetime.SINGLETON }),
-    },
-
-    { token: diTokens.llmConfig, resolver: () => awilix.asValue(llmConfig) },
-    {
-      token: diTokens.llmService,
-      resolver: () =>
-        awilix.asClass(LLMService, { lifetime: awilix.Lifetime.SINGLETON }),
-    },
-
-    {
-      token: diTokens.serverConfig,
-      resolver: () => awilix.asValue(serverConfig),
+        awilix.asClass(DefaultLLMAdapter, {
+          lifetime: awilix.Lifetime.SINGLETON,
+        }),
     },
     {
       token: diTokens.fastifyServer,
@@ -97,7 +78,7 @@ export const createContainer = async (registerationOverrides = []) => {
   ];
 
   const newRegistrations = applyOverrides(
-    registrations,
+    orderedRegistrations,
     registerationOverrides
   );
 

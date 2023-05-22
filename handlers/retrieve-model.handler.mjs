@@ -1,22 +1,28 @@
+/* eslint-disable camelcase */
 import { diTokens } from "../container.mjs";
 
 export default class RetrieveModelHandler {
   static operationId = "retrieveModel";
-  #modelService;
+  #llmAdapter;
 
-  constructor({ [diTokens.modelService]: modelService }) {
-    this.#modelService = modelService;
+  constructor({ [diTokens.llmAdapter]: llmAdapter }) {
+    this.#llmAdapter = llmAdapter;
   }
 
   handle(request, reply) {
     const { model: modelName } = request.params;
-    const model = this.#modelService.getModel(modelName);
 
-    if (!model) {
+    if (modelName !== this.#llmAdapter.modelName) {
       reply.code(404);
       throw new Error(`Model ${modelName} not found`);
     }
 
-    return model;
+    return {
+      id: this.#llmAdapter.modelName,
+      object: "model",
+      owned_by: "unknown",
+      created: 0,
+      permission: [],
+    };
   }
 }

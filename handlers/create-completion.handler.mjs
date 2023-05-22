@@ -6,10 +6,10 @@ import { randomUUID } from "node:crypto";
 export default class CreateCompletionHandler {
   static operationId = "createCompletion";
 
-  #llmService;
+  #llmAdapter;
 
-  constructor({ [diTokens.llmService]: llmService }) {
-    this.#llmService = llmService;
+  constructor({ [diTokens.llmAdapter]: llmAdapter }) {
+    this.#llmAdapter = llmAdapter;
   }
 
   // FIXME: This is a mess. Refactor.
@@ -53,7 +53,7 @@ export default class CreateCompletionHandler {
     assert.equal(stop, null, "stop is not supported");
     assert.equal(logit_bias, null, "logit_bias is not supported");
 
-    const config = {
+    const completionConfig = {
       prompt: Array.isArray(prompt) ? prompt[0] : prompt,
       nTokPredict: max_tokens,
       temp: temperature,
@@ -63,7 +63,9 @@ export default class CreateCompletionHandler {
     };
 
     const tokens = [];
-    const completionIterator = await this.#llmService.createCompletion(config);
+    const completionIterator = await this.#llmAdapter.createCompletion(
+      completionConfig
+    );
 
     const id = randomUUID();
     const created = Date.now();
@@ -72,6 +74,7 @@ export default class CreateCompletionHandler {
       return reply.sse(
         (async function* () {
           for await (const { text, finishReason } of completionIterator) {
+            // TODO: move this to llm-adapter
             if (text === "\n\n<end>\n") {
               break;
             }
@@ -103,6 +106,7 @@ export default class CreateCompletionHandler {
     for await (const { text, finishReason } of completionIterator) {
       finish_reason = finishReason;
 
+      // TODO: move this to llm-adapter
       if (text === "\n\n<end>\n") {
         break;
       }

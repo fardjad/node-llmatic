@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import fs from "node:fs";
 import assert from "node:assert";
 import { FastifySSEPlugin } from "fastify-sse-v2";
 import { glob } from "glob";
@@ -25,9 +26,9 @@ const validateRouteHandler = (handler, file) => {
   );
 };
 
-const createOpenapiGlueService = async ({ serverConfig, container }) => {
+const createOpenapiGlueService = async ({ container }) => {
   const routeHandlerFiles = await glob("**/*.handler.mjs", {
-    cwd: serverConfig.handlersDirectory,
+    cwd: new URL("handlers", import.meta.url),
     absolute: true,
   });
 
@@ -51,7 +52,7 @@ const createOpenapiGlueService = async ({ serverConfig, container }) => {
 const configureOpenapiGlue = async ({
   container,
   fastifyServer,
-  serverConfig,
+  openapiDocument,
 }) => {
   const schemaCompilers = {
     body: new Ajv(),
@@ -89,18 +90,17 @@ const configureOpenapiGlue = async ({
     return compiler.compile(request.schema);
   });
 
-  const service = await createOpenapiGlueService({ serverConfig, container });
+  const service = await createOpenapiGlueService({ container });
 
   fastifyServer.register(openapiGlue, {
-    specification: serverConfig.oasDocument,
-    // TODO: Make this configurable
+    specification: openapiDocument,
     prefix: "/v1",
     service,
     securityHandlers: {},
   });
 };
 
-const configureSwaggerUI = async ({ fastifyServer, serverConfig }) => {
+const configureSwaggerUI = async ({ fastifyServer, openapiDocument }) => {
   fastifyServer.register(fastifyStatic, {
     root: swaggerUiDist.getAbsoluteFSPath(),
     prefix: "/swagger-ui/",
@@ -115,7 +115,7 @@ const configureSwaggerUI = async ({ fastifyServer, serverConfig }) => {
 
   fastifyServer.get("/api.oas.yml", (request, reply) => {
     const newOas = {
-      ...serverConfig.oasDocument,
+      ...openapiDocument,
       servers: [
         {
           url: `${request.protocol}://${request.hostname}`,
@@ -129,15 +129,21 @@ const configureSwaggerUI = async ({ fastifyServer, serverConfig }) => {
 
 export const createFastifyServer = async ({
   [diTokens.container]: container,
-  [diTokens.serverConfig]: serverConfig,
 }) => {
   const fastifyServer = fastify({
     logger: true,
   });
 
   fastifyServer.register(FastifySSEPlugin);
-  configureSwaggerUI({ fastifyServer, serverConfig });
-  await configureOpenapiGlue({ container, fastifyServer, serverConfig });
+
+  const openapiDocument = yaml.load(
+    await fs.promises.readFile(new URL("api.oas.yml", import.meta.url), {
+      encoding: "utf8",
+    })
+  );
+
+  configureSwaggerUI({ fastifyServer, openapiDocument });
+  await configureOpenapiGlue({ container, fastifyServer, openapiDocument });
 
   return fastifyServer;
 };

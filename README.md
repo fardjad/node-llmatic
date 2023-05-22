@@ -39,30 +39,31 @@ But I wanted a small, simple, and easy to extend implementation in Javascript ba
 
 ## How to use
 
-Clone the repo and install the dependencies:
+Make sure you have [Node.js](https://nodejs.org/en/) installed.
+
+Install the package:
 
 ```bash
-git clone https://github.com/fardjad/node-llmatic.git
-cd node-llmatic
-npm install
+npm install -g llmatic
 ```
 
-Download a
-[compatible model](https://github.com/Atome-FE/llama-node#supported-models) and
-place it in the `models` directory.
-
-Set the `LLMATIC_MODEL` environment variable to the name of the model:
+Create an empty directory and run `llmatic init`:
 
 ```bash
-# the value must be the name of the model file with the .bin extension
-export LLMATIC_MODEL_NAME=Wizard-Vicuna-13B-Uncensored.ggml.q5_1.bin
+mkdir my-llmatic
+cd my-llmatic
+
+# Download a model and generate a config file
+llmatic init
 ```
 
-Run the server:
+Adjust the config file to your needs and start the server:
 
 ```bash
-npm start
+llmatic start
 ```
+
+You can run `llmatic --help` to see all available commands.
 
 ### Usage with [chatbot-ui](https://github.com/mckaywrigley/chatbot-ui)
 

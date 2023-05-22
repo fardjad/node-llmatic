@@ -3,16 +3,16 @@ import { diTokens } from "../container.mjs";
 
 export default class CreateEmbeddingHandler {
   static operationId = "createEmbedding";
-  #llmService;
+  #llmAdapter;
 
-  constructor({ [diTokens.llmService]: llmService }) {
-    this.#llmService = llmService;
+  constructor({ [diTokens.llmAdapter]: llmAdapter }) {
+    this.#llmAdapter = llmAdapter;
   }
 
   async handle(request) {
     const { input, model } = request.body;
 
-    const embedding = await this.#llmService.getEmbedding({
+    const embedding = await this.#llmAdapter.getEmbedding({
       prompt: input,
     });
 

@@ -1,14 +1,26 @@
+/* eslint-disable camelcase */
 import { diTokens } from "../container.mjs";
 
 export default class ListModelsHandler {
   static operationId = "listModels";
-  #modelService;
+  #llmAdapter;
 
-  constructor({ [diTokens.modelService]: modelService }) {
-    this.#modelService = modelService;
+  constructor({ [diTokens.llmAdapter]: llmAdapter }) {
+    this.#llmAdapter = llmAdapter;
   }
 
   handle() {
-    return this.#modelService.getModels();
+    const model = {
+      id: this.#llmAdapter.modelName,
+      object: "model",
+      owned_by: "unknown",
+      created: 0,
+      permission: [],
+    };
+
+    return {
+      object: "list",
+      data: [model],
+    };
   }
 }
