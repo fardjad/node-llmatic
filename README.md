@@ -1,6 +1,14 @@
+<div align="center">
+
 # LLMatic
 
-> Use self-hosted LLMs with an OpenAI compatible API
+<img alt="LLMatic Logo" width="300px" height="300px" src="/media/logo.png">
+
+Use self-hosted LLMs with an OpenAI compatible API
+
+</div>
+
+<hr />
 
 LLMatic can be used as a drop-in replacement for OpenAI's API (see the
 supported endpoints). It uses [llama-node](https://github.com/Atome-FE/llama-node)
