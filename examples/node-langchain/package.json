@@ -1,0 +1,14 @@
+{
+  "name": "langchain-llmatic-example",
+  "private": true,
+  "version": "0.0.0",
+  "description": "LangChain.js example with LLMatic",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "author": "Fardjad Davari <public@fardjad.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "langchain": "^0.0.78"
+  }
+}
