@@ -17,8 +17,6 @@ export default class DefaultLLMAdapter {
   async load() {
     if (this.#loaded) return;
 
-    console.log(this.#llmConfig);
-
     await this.#llamaNode.load(this.#llmConfig);
     this.#loaded = true;
   }
