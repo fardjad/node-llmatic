@@ -1,9 +1,10 @@
-import { EventEmitter } from "node:events";
-import path from "node:path";
-import { EventIterator } from "event-iterator";
-import { LLamaCpp } from "llama-node/dist/llm/llama-cpp.js";
-import { LLM as LlamaNode } from "llama-node";
 import { diTokens } from "./container.mjs";
+import { EventIterator } from "event-iterator";
+import { LLM as LlamaNode } from "llama-node";
+import { LLamaCpp } from "llama-node/dist/llm/llama-cpp.js";
+import { EventEmitter } from "node:events";
+import { cpus } from "node:os";
+import path from "node:path";
 
 export default class DefaultLLMAdapter {
   #llamaNode = new LlamaNode(LLamaCpp);
@@ -17,7 +18,12 @@ export default class DefaultLLMAdapter {
   async load() {
     if (this.#loaded) return;
 
-    await this.#llamaNode.load(this.#llmConfig);
+    await this.#llamaNode.load({
+      ...DefaultLLMAdapter.defaultConfig,
+      ...this.#llmConfig,
+      // For older versions of llama-node
+      path: this.#llmConfig.modelPath,
+    });
     this.#loaded = true;
   }
 
@@ -92,5 +98,30 @@ export default class DefaultLLMAdapter {
 
   get modelName() {
     return path.basename(this.#llmConfig.path);
+  }
+
+  static get defaultConfig() {
+    return {
+      // Load config
+      enableLogging: false,
+      nParts: 1,
+      nGpuLayers: 0,
+      f16Kv: false,
+      logitsAll: false,
+      vocabOnly: false,
+      seed: 0,
+      useMlock: true,
+      embedding: true,
+      useMmap: true,
+      nCtx: 4096,
+
+      // Invocation config
+      nThreads: cpus().length,
+      nTokPredict: Number.MAX_SAFE_INTEGER,
+      topK: 40,
+      topP: 0.95,
+      temp: 0,
+      repeatPenalty: 1.1,
+    };
   }
 }

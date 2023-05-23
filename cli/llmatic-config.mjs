@@ -1,10 +1,12 @@
-import fs from "node:fs";
-import path from "node:path";
+import { llmAdapterOption } from "./common-options.mjs";
+import { importFile, readPackageJson } from "./utils.mjs";
 import { input } from "@inquirer/prompts";
 import select, { Separator } from "@inquirer/select";
+import { program } from "commander";
+import fs from "node:fs";
+import path from "node:path";
 import Downloader from "nodejs-file-downloader";
 import isValidFilename from "valid-filename";
-import { config } from "../config.mjs";
 
 const downloadFile = (url, fileName) => {
   const downloader = new Downloader({
@@ -28,7 +30,7 @@ const downloadFile = (url, fileName) => {
   return downloader.download();
 };
 
-const menu = async () => {
+const menu = async (llmDefaultConfig) => {
   const answer = await select({
     message: "What do you want to do?",
     choices: [
@@ -53,11 +55,11 @@ const menu = async () => {
   }
 
   if (answer === "generateConfig") {
-    return generateConfig();
+    return generateConfig(llmDefaultConfig);
   }
 };
 
-const generateConfig = async () => {
+const generateConfig = async (llmDefaultConfig) => {
   const files = await fs.promises.readdir("./models");
   const binFiles = files.filter((file) => path.extname(file) === ".bin");
 
@@ -75,14 +77,15 @@ const generateConfig = async () => {
     choices,
   });
 
-  const newConfig = {
-    ...config,
-    llmConfig: { ...config.llmConfig, path: `./models/${answer}` },
+  const modelPath = `./models/${answer}`;
+  const llmConfig = {
+    ...llmDefaultConfig,
+    modelPath,
   };
 
   await fs.promises.writeFile(
     "./llmatic.config.json",
-    JSON.stringify(newConfig, null, 2)
+    JSON.stringify(llmConfig, null, 2)
   );
 
   console.log("\n\n📝 Generated config file: llmatic.config.json\n\n");
@@ -125,4 +128,15 @@ const downloadModel = async () => {
   return menu();
 };
 
-await menu();
+const { version } = await readPackageJson();
+
+program
+  .version(version)
+  .description("Configure LLMatic")
+  .addOption(llmAdapterOption)
+  .action(async ({ llmAdapter: llmAdapterPath }) => {
+    const llmAdapter = await importFile(llmAdapterPath);
+    return menu(llmAdapter.defaultConfig);
+  });
+
+await program.parseAsync(process.argv);

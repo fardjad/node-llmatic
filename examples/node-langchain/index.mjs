@@ -1,7 +1,7 @@
-import { OpenAI } from "langchain/llms/openai";
-import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
+import { OpenAI } from "langchain/llms/openai";
 import { BufferMemory } from "langchain/memory";
+import { PromptTemplate } from "langchain/prompts";
 
 const model = new OpenAI(
   {

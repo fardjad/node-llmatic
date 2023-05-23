@@ -1,6 +1,5 @@
-import awilix from "awilix";
 import { createFastifyServer } from "./fastify-server-factory.mjs";
-import DefaultLLMAdapter from "./default-llm-adapter.mjs";
+import awilix from "awilix";
 
 /**
  * Use these tokens for registrations and resolutions to avoid the problems of
@@ -65,10 +64,9 @@ export const createContainer = async (registerationOverrides = []) => {
     },
     {
       token: diTokens.llmAdapter,
-      resolver: () =>
-        awilix.asClass(DefaultLLMAdapter, {
-          lifetime: awilix.Lifetime.SINGLETON,
-        }),
+      resolver() {
+        throw new Error("llmAdapter must be overridden");
+      },
     },
     {
       token: diTokens.fastifyServer,

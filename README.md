@@ -41,20 +41,21 @@ But I wanted a small, simple, and easy to extend implementation in Javascript ba
 
 Make sure you have [Node.js](https://nodejs.org/en/) installed.
 
-Install the package:
+Create an empty directory and run `npm init`:
 
 ```bash
-npm install -g llmatic
+export LLMATIC_PROJECT_DIR=my-llmatic-project
+mkdir $LLMATIC_PROJECT_DIR
+cd $LLMATIC_PROJECT_DIR
+npm init -y
 ```
 
-Create an empty directory and run `llmatic init`:
+Install and configure LLMatic:
 
 ```bash
-mkdir my-llmatic
-cd my-llmatic
-
+npm add llmatic
 # Download a model and generate a config file
-llmatic init
+npx llmatic config
 ```
 
 Adjust the config file to your needs and start the server:

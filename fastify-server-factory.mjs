@@ -1,16 +1,16 @@
-import { fileURLToPath } from "node:url";
-import fs from "node:fs";
-import assert from "node:assert";
-import { FastifySSEPlugin } from "fastify-sse-v2";
-import { glob } from "glob";
+import { diTokens } from "./container.mjs";
+import fastifyStatic from "@fastify/static";
 import Ajv from "ajv";
 import fastify from "fastify";
-import fastifyStatic from "@fastify/static";
 import openapiGlue from "fastify-openapi-glue";
+import { FastifySSEPlugin } from "fastify-sse-v2";
+import { glob } from "glob";
+import yaml from "js-yaml";
+import assert from "node:assert";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 import swaggerUiDist from "swagger-ui-dist";
 import traverse from "traverse";
-import yaml from "js-yaml";
-import { diTokens } from "./container.mjs";
 
 const validateRouteHandler = (handler, file) => {
   assert.strictEqual(

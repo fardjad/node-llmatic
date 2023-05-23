@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
-import assert from "node:assert";
 import { diTokens } from "../container.mjs";
+import assert from "node:assert";
 import { randomUUID } from "node:crypto";
 
 export default class CreateChatCompletionHandler {

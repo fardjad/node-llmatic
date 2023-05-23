@@ -1,11 +1,10 @@
 /* eslint-disable unicorn/no-process-exit */
-
-import fs from "node:fs";
-import { Option, program } from "commander";
-import awilix from "awilix";
-import { fileExists, readPackageJson } from "./utils.mjs";
 import { createContainer, diTokens } from "../container.mjs";
-import { config as defaultConfig } from "../config.mjs";
+import { llmAdapterOption } from "./common-options.mjs";
+import { fileExists, importFile, readPackageJson } from "./utils.mjs";
+import awilix from "awilix";
+import { Option, program } from "commander";
+import fs from "node:fs";
 
 const { version } = await readPackageJson();
 
@@ -17,33 +16,46 @@ program
       "llmatic.config.json"
     )
   )
+  .addOption(llmAdapterOption)
   .addOption(
     new Option("-p --port [port]", "port to listen on").default("3000")
   )
   .addOption(
     new Option("-h --host [port]", "host to listen on").default("localhost")
   )
-  .action(async ({ config: configFilePath, port, host }) => {
-    if (!(await fileExists(configFilePath))) {
-      console.error(`File ${configFilePath} not found.`);
-      process.exit(1);
-    }
+  .action(
+    async ({
+      llmAdapter: llmAdapterPath,
+      config: configFilePath,
+      port,
+      host,
+    }) => {
+      if (!(await fileExists(configFilePath))) {
+        console.error(`File ${configFilePath} not found.`);
+        process.exit(1);
+      }
 
-    const config = {
-      ...defaultConfig,
-      ...JSON.parse(await fs.promises.readFile(configFilePath, "utf8")),
-    };
+      const llmConfig = JSON.parse(
+        await fs.promises.readFile(configFilePath, "utf8")
+      );
 
-    const container = await createContainer([
-      {
-        token: diTokens.llmConfig,
-        resolver() {
-          return awilix.asValue(config.llmConfig);
+      const container = await createContainer([
+        {
+          token: diTokens.llmConfig,
+          resolver() {
+            return awilix.asValue(llmConfig);
+          },
         },
-      },
-    ]);
-    const fastifyServer = container.resolve(diTokens.fastifyServer);
-    await fastifyServer.listen({ port: Number(port), host });
-  });
+        {
+          token: diTokens.llmAdapter,
+          async resolver() {
+            return awilix.asClass(await importFile(llmAdapterPath));
+          },
+        },
+      ]);
+      const fastifyServer = container.resolve(diTokens.fastifyServer);
+      await fastifyServer.listen({ port: Number(port), host });
+    }
+  );
 
 await program.parseAsync(process.argv);
