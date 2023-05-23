@@ -97,7 +97,7 @@ export default class DefaultLLMAdapter {
   }
 
   get modelName() {
-    return path.basename(this.#llmConfig.path);
+    return path.basename(this.#llmConfig.modelPath);
   }
 
   static get defaultConfig() {

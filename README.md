@@ -61,7 +61,7 @@ npx llmatic config
 Adjust the config file to your needs and start the server:
 
 ```bash
-llmatic start
+npx llmatic start
 ```
 
 You can run `llmatic --help` to see all available commands.
