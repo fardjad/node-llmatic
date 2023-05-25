@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/no-process-exit */
-import { createContainer, diTokens } from "../container.mjs";
-import { llmAdapterOption } from "./common-options.mjs";
-import { fileExists, importFile, readPackageJson } from "./utils.mjs";
+import { createContainer, diTokens } from "../container.ts";
+import { fileExists, importFile, readPackageJson } from "./cli-utils.ts";
+import { llmAdapterOption } from "./common-options.ts";
 import awilix from "awilix";
 import { Option, program } from "commander";
 import fs from "node:fs";
@@ -49,7 +49,9 @@ program
         {
           token: diTokens.llmAdapter,
           async resolver() {
-            return awilix.asClass(await importFile(llmAdapterPath));
+            const LLMAdapterConstructor = await importFile(llmAdapterPath);
+            const llmAdapter = new LLMAdapterConstructor(llmConfig);
+            return awilix.asValue(llmAdapter);
           },
         },
       ]);

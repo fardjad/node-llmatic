@@ -1,4 +1,4 @@
-import { readPackageJson } from "./utils.mjs";
+import { readPackageJson } from "./cli-utils.ts";
 import { program } from "commander";
 
 const { version, description } = await readPackageJson();

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "strictNullChecks": true,
+    "noEmit": true
+  }
+}
