@@ -1,9 +1,16 @@
 {
-  "extends": ["xo", "plugin:unicorn/recommended", "prettier"],
+  "extends": ["plugin:unicorn/recommended", "xo", "xo-typescript", "prettier"],
   "rules": {
     "eqeqeq": ["error", "smart"],
     "no-eq-null": "off",
     "unicorn/no-null": "off",
     "unicorn/prefer-event-target": "off"
-  }
+  },
+  "ignorePatterns": [
+    "bin/llmatic",
+    "scripts/*.mjs",
+    "src/cli/*.js",
+    "src/types/*.ts",
+    "examples/**"
+  ]
 }

@@ -1,27 +1,40 @@
-import { createFastifyServer } from "./fastify-server-factory.mjs";
+import { createFastifyServer } from "./fastify-server-factory.ts";
+import type { LlmAdapter } from "./llm-adapter.ts";
+import { SseHelper } from "./sse-helper.ts";
 import awilix from "awilix";
+
+export type Cradle = {
+  container: awilix.AwilixContainer;
+  llmConfig: unknown;
+  llmAdapter: LlmAdapter;
+  sseHelper: SseHelper;
+  fastifyServer: Awaited<ReturnType<typeof createFastifyServer>>;
+};
 
 /**
  * Use these tokens for registrations and resolutions to avoid the problems of
  * hardcoded strings.
  */
-export const diTokens = {
+export const diTokens: { [k in keyof Cradle]: k } = {
   container: "container",
   llmConfig: "llmConfig",
-  llmAdapter: "llmApatper",
+  llmAdapter: "llmAdapter",
+  sseHelper: "sseHelper",
   fastifyServer: "fastifyServer",
 };
 
-/**
- *
- * @param {{token: string, resolver: () => any}[]} registrations
- * @param {{token: string, resolver: () => any}[]} registrationOverrides
- * @returns {{token: string, resolver: () => any}[]}
- */
-export const applyOverrides = (registrations, registrationOverrides) => {
+export type ContainerRegistration = {
+  token: keyof Cradle;
+  resolver: () => Promise<awilix.Resolver<unknown>> | awilix.Resolver<unknown>;
+};
+
+export const applyOverrides = (
+  registrations: ContainerRegistration[],
+  registrationOverrides: ContainerRegistration[]
+) => {
   const registrationOverridesCopy = [...registrationOverrides];
 
-  const result = [];
+  const result: ContainerRegistration[] = [];
 
   for (const { token, resolver } of registrations) {
     const overrideIndex = registrationOverridesCopy.findIndex(
@@ -45,17 +58,24 @@ export const applyOverrides = (registrations, registrationOverrides) => {
 /**
  * Create and configure the Awilix container. Async resolvers and overrides
  * are supported (can be useful for testing).
- *
- * @param {{token: string, resolver: () => any}[]} registerationOverrides
- * @returns {Promise<import("awilix").AwilixContainer>}
  */
-export const createContainer = async (registerationOverrides = []) => {
-  const container = awilix.createContainer({
+export const createContainer = async (
+  registerationOverrides: ContainerRegistration[] = []
+) => {
+  const container = awilix.createContainer<Cradle>({
     injectionMode: awilix.InjectionMode.PROXY,
   });
 
-  const orderedRegistrations = [
-    { token: diTokens.container, resolver: () => awilix.asValue(container) },
+  const orderedRegistrations: ContainerRegistration[] = [
+    {
+      token: diTokens.container,
+      resolver: () => awilix.asValue(container),
+    },
+    {
+      token: diTokens.sseHelper,
+      resolver: () =>
+        awilix.asClass(SseHelper, { lifetime: awilix.Lifetime.SINGLETON }),
+    },
     {
       token: diTokens.llmConfig,
       resolver() {

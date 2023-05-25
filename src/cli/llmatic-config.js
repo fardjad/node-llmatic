@@ -1,5 +1,5 @@
-import { llmAdapterOption } from "./common-options.mjs";
-import { importFile, readPackageJson } from "./utils.mjs";
+import { llmAdapterOption } from "./common-options.ts";
+import { importFile, readPackageJson } from "./utils.ts";
 import { input } from "@inquirer/prompts";
 import select, { Separator } from "@inquirer/select";
 import { program } from "commander";

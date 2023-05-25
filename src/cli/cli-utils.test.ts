@@ -1,27 +1,22 @@
-import {
-  readPackageJson,
-  fileExists,
-  invokeInDirectory,
-  importFile,
-} from "./utils.mjs";
+import * as cliUtils from "./cli-utils.ts";
 import assert from "node:assert";
 import path from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
-test("readPackageJson", async () => {
-  const { version } = await readPackageJson();
+await test("readPackageJson", async () => {
+  const { version } = await cliUtils.readPackageJson();
   assert.strictEqual(typeof version, "string");
 });
 
-test("fileExists", async (t) => {
+await test("fileExists", async (t) => {
   await t.test("file exists", async () => {
-    const exists = await fileExists(new URL(import.meta.url));
+    const exists = await cliUtils.fileExists(new URL(import.meta.url));
     assert.strictEqual(exists, true);
   });
 
   await t.test("file does not exist", async () => {
-    const exists = await fileExists("/does/not/exist");
+    const exists = await cliUtils.fileExists("/does/not/exist");
     assert.strictEqual(exists, false);
   });
 });
@@ -33,7 +28,7 @@ await test("invokeInDirectory", async (t) => {
     "should invoke a function in the specific directory",
     async () => {
       const cwd = process.cwd();
-      const result = await invokeInDirectory(
+      const result = await cliUtils.invokeInDirectory(
         newPath,
         (previousWorkingDirectory, currentWorkingDirectory) => {
           assert.strictEqual(previousWorkingDirectory, cwd);
@@ -50,7 +45,7 @@ await test("invokeInDirectory", async (t) => {
   await t.test("should await promises before returning a result", async () => {
     let count = 0;
 
-    const result = await invokeInDirectory(newPath, async () => {
+    const result = await cliUtils.invokeInDirectory(newPath, async () => {
       await new Promise((resolve) => {
         setTimeout(resolve, 0);
       });
@@ -65,9 +60,9 @@ await test("invokeInDirectory", async (t) => {
   });
 });
 
-test("importFile", async () => {
-  const utils = await importFile(
-    fileURLToPath(new URL("utils.mjs", import.meta.url))
+await test("importFile", async () => {
+  const importedModule = await cliUtils.importFile<typeof cliUtils>(
+    fileURLToPath(new URL("cli-utils.ts", import.meta.url))
   );
-  assert.ok(utils);
+  assert.strictEqual(importedModule, cliUtils);
 });
