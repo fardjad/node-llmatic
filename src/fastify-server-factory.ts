@@ -122,7 +122,7 @@ const configureSwaggerUi = async ({
 
 export const createFastifyServer = async ({ container }: Cradle) => {
   const fastifyServer = fastify({
-    logger: false,
+    logger: true,
   });
 
   const openapiDocument = yaml.load(
