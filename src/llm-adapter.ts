@@ -25,7 +25,7 @@ export type LlmAdapterCreateCompletionRequest = {
   n?: number;
   presencePenalty?: number;
   // TODO: Support other types
-  prompt?: string[];
+  prompt: string[];
   stop?: string[];
   suffix?: string;
   temperature?: number;

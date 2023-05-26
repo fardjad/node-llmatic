@@ -1,13 +1,4 @@
-#!/usr/bin/env node
-/* eslint-disable unicorn/prefer-module */
+#!/usr/bin/env bash
 
-const path = require("node:path");
-const childProcess = require("node:child_process");
-
-childProcess.fork(
-  path.join(__dirname, "../src/cli/llmatic.ts"),
-  process.argv.slice(2),
-  {
-    execArgv: ["--no-warnings", "--loader", "tsx"],
-  }
-);
+ROOT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )"
+/usr/bin/env node --no-warnings --loader tsx -- ${ROOT_DIR}/src/cli/llmatic.ts "$@"

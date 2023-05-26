@@ -111,7 +111,7 @@ const configureSwaggerUi = async ({
       ...(openapiDocument as Record<string, unknown>),
       servers: [
         {
-          url: `${request.protocol}://${request.hostname}`,
+          url: `${request.protocol}://${request.hostname}/v1`,
         },
       ],
     };
