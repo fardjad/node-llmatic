@@ -34,12 +34,17 @@ OpenAI-Compatible APIs such as:
 2. [GPT4All Chat Server Mode](https://docs.gpt4all.io/gpt4all_chat.html#gpt4all-chat-server-mode)
 3. [simpleAI](https://github.com/lhenault/simpleAI)
 
-But I wanted a small, simple, and easy to extend implementation in Javascript based on the
+But I wanted a small, simple, and easy to extend implementation in TypeScript based on the
 [official OpenAI API specification](https://github.com/openai/openai-openapi/blob/master/openapi.yaml).
 
 ## How to use
 
-Make sure you have [Node.js](https://nodejs.org/en/) installed.
+### Requirements
+
+- Node.js >=18.16
+- Unix-based OS (Linux, macOS, WSL, etc.)
+
+### Installation
 
 Create an empty directory and run `npm init`:
 
@@ -80,11 +85,15 @@ Create a `.env.local` file:
 
 ```bash
 cat <<EOF > .env.local
-
 # For now, this is ignored by LLMatic
-DEFAULT_MODEL=${LLMATIC_MODEL_NAME:-Ignored}
+DEFAULT_MODEL=Ignored
 
-NEXT_PUBLIC_DEFAULT_SYSTEM_PROMPT=You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using markdown.
+NEXT_PUBLIC_DEFAULT_SYSTEM_PROMPT=A chat between a curious human (user) and an artificial intelligence assistant (assistant). The assistant gives helpful, detailed, and polite answers to the human's questions.
+
+user: Hello!
+assistant: Hello! How may I help you today?
+user: Please tell me the largest city in Europe.
+assistant: Sure. The largest city in Europe is Moscow, the capital of Russia.
 
 OPENAI_API_KEY=ANYTHING_WILL_DO
 OPENAI_API_HOST=http://localhost:3000
