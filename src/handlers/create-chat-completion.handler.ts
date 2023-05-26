@@ -141,7 +141,7 @@ export default class CreateChatCompletionHandler implements OperationHandler {
       id,
       model,
       choices: choices.filter(Boolean),
-      created: Date.now(),
+      created: Math.floor(Date.now() / 1000),
       object: "chat.completion",
     };
   }
