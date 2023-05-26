@@ -35,6 +35,7 @@ export default class ListModelsHandler implements OperationHandler {
     };
 
     // To preserve model.permissions
+    void reply.header("Content-Type", "application/json; charset=utf-8");
     void reply.serializer(JSON.stringify);
 
     return response;

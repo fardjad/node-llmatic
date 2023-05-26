@@ -36,7 +36,7 @@ await test("createCompletionHandler", async (t) => {
       async createCompletion(createCompletionRequest, abortSignal, callback) {
         const { prompt, n } = createCompletionRequest;
 
-        const count = prompt!.length * (n ?? 1);
+        const count = prompt.length * (n ?? 1);
         for (let index = 0; index < count; index++) {
           callback({
             finishReason: "stop",
