@@ -1,5 +1,5 @@
+import { importFile, readPackageJson } from "./cli-utils.ts";
 import { llmAdapterOption } from "./common-options.ts";
-import { importFile, readPackageJson } from "./utils.ts";
 import { input } from "@inquirer/prompts";
 import select, { Separator } from "@inquirer/select";
 import { program } from "commander";
@@ -95,7 +95,7 @@ const generateConfig = async (llmDefaultConfig) => {
 
 const downloadModel = async () => {
   const url = await input({
-    message: "Enter the model URL:",
+    message: "Enter the model URL (the full address to a GGML .bin file):",
     validate(value) {
       try {
         // eslint-disable-next-line no-new
