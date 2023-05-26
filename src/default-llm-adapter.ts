@@ -44,7 +44,17 @@ export default class DefaultLlmAdapter extends LlmAdapter {
         return `${role ?? Role.User}: ${content}`;
       })
       .join("\n")
-      .concat(`${Role.Assistant}: `);
+      .concat(`\n${Role.Assistant}: `);
+
+    const bufferedTokens: string[] = [];
+    const flushBuffer = (index: number) => {
+      while (bufferedTokens.length > 0) {
+        onData({
+          index,
+          delta: { content: bufferedTokens.shift() },
+        });
+      }
+    };
 
     for (
       let index = 0;
@@ -61,7 +71,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
           prompt,
         },
         abortSignal,
-        ({ token, finishReason }) => {
+        ({ token, finishReason, stop }) => {
           if (isFirstToken) {
             onData({
               index,
@@ -72,13 +82,23 @@ export default class DefaultLlmAdapter extends LlmAdapter {
             isFirstToken = false;
           }
 
-          onData({
-            index,
-            delta: { content: token },
-            finishReason,
-          });
+          if (["\n", Role.User, ":"].includes(token.trim())) {
+            bufferedTokens.push(token);
+            if (bufferedTokens.join("").trim() === `${Role.User}:`) {
+              stop();
+              bufferedTokens.length = 0;
+            }
+          } else {
+            flushBuffer(index);
+            onData({
+              index,
+              delta: { content: token },
+              finishReason,
+            });
+          }
         },
         () => {
+          flushBuffer(index);
           onData({
             index,
             delta: {},
@@ -167,7 +187,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
   static get defaultConfig() {
     return {
       // Load config
-      enableLogging: true,
+      enableLogging: false,
       nParts: 1,
       nGpuLayers: 0,
       f16Kv: false,
@@ -209,9 +229,11 @@ export default class DefaultLlmAdapter extends LlmAdapter {
     onToken: ({
       token,
       finishReason,
+      stop,
     }: {
       token: string;
       finishReason: FinishReason;
+      stop: () => void;
     }) => void,
     onComplete?: () => void
   ) {
@@ -220,6 +242,10 @@ export default class DefaultLlmAdapter extends LlmAdapter {
 
     const handleAbort = () => {
       callerAbortSignal.removeEventListener("abort", handleAbort);
+      abortController.abort();
+    };
+
+    const stop = () => {
       abortController.abort();
     };
 
@@ -245,7 +271,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
             abortController.abort();
           }
 
-          onToken({ token, finishReason });
+          onToken({ token, finishReason, stop });
         },
         abortController.signal
       )
