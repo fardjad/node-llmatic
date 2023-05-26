@@ -13,10 +13,12 @@
   "license": "MIT",
   "author": "Fardjad Davari <public@fardjad.com>",
   "bin": {
-    "llmatic": "./bin/llmatic"
+    "llmatic": "./bin/llmatic",
+    "llmatic.js": "./bin/llmatic.js"
   },
   "files": [
     "bin/llmatic",
+    "bin/llmatic.js",
     "api.oas.yml",
     "public/index.html",
     "src/",

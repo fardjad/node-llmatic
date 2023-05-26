@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-ROOT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )"
-/usr/bin/env node --no-warnings --loader tsx -- ${ROOT_DIR}/src/cli/llmatic.ts "$@"
+PREVIOUS_DIRECTORY="$(pwd)"
+BIN_DIRECTORY="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+cd "$PREVIOUS_DIRECTORY"
+
+exec "$BIN_DIRECTORY/llmatic.js" "$@"
