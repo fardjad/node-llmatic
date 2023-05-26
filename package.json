@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "type": "module",
   "keywords": [
@@ -20,6 +20,7 @@
     "api.oas.yml",
     "public/index.html",
     "src/",
+    "!src/test-support",
     "!**/*.test.*"
   ],
   "scripts": {
