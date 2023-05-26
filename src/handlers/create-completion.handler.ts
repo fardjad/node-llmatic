@@ -161,7 +161,7 @@ export default class CreateCompletionHandler implements OperationHandler {
     return {
       id,
       choices: choices.filter(Boolean),
-      created: Date.now(),
+      created: Math.floor(Date.now() / 1000),
       model,
       object: "text_completion",
     };
