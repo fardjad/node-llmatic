@@ -1,0 +1,15 @@
+{
+  "name": "llmatic-custom-adapter-example",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "LLMatic custom adapter example",
+  "scripts": {
+    "start": "llmatic start --llm-adapter ./custom-llm-adapter.ts"
+  },
+  "keywords": [],
+  "author": "Fardjad Davari <public@fardjad.com>",
+  "license": "MIT",
+  "dependencies": {
+    "llmatic": "^0.4.4"
+  }
+}

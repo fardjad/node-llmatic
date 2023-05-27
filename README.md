@@ -39,6 +39,10 @@ But I wanted a small, simple, and easy to extend implementation in TypeScript ba
 
 ## How to use
 
+If you prefer a video introduction, you can watch the following video:
+
+[![LLMatic](https://img.youtube.com/vi/V_baaAZMY44/default.jpg)](https://youtu.be/V_baaAZMY44)
+
 ### Requirements
 
 - Node.js >=18.16
@@ -242,3 +246,13 @@ AI:
 ```
 
 </details>
+
+## Custom Adapters
+
+LLMatic is designed to be easily extensible. You can create your own adapters by extending the [`LlmAdapter`](/src/llm-adapter.ts) class. See [`examples/custom-adapter`](/examples/custom-adapter) for an example.
+
+To start llmatic with a custom adapter, use the `--llm-adapter` flag:
+
+```bash
+llmatic start --llm-adapter ./custom-llm-adapter.ts
+```
