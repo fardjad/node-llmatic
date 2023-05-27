@@ -11,6 +11,7 @@
     "scripts/*.mjs",
     "src/cli/*.js",
     "src/types/*.ts",
-    "examples/**"
+    "examples/**",
+    "dist/**"
   ]
 }

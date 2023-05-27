@@ -1,7 +1,21 @@
 {
   "name": "llmatic",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
+  "exports": {
+    "./llm-adapter": {
+      "types": "./dist/llm-adapter.d.ts",
+      "import": "./dist/llm-adapter.js",
+      "require": "./dist/llm-adapter.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "llm-adapter": [
+        "./dist/llm-adapter.d.ts"
+      ]
+    }
+  },
   "type": "module",
   "keywords": [
     "openai",
@@ -17,6 +31,9 @@
     "llmatic.js": "./bin/llmatic.js"
   },
   "files": [
+    "dist/llm-adapter.cjs",
+    "dist/llm-adapter.js",
+    "dist/llm-adapter.d.ts",
     "bin/llmatic",
     "bin/llmatic.js",
     "api.oas.yml",
@@ -33,7 +50,8 @@
     "posttest": "npm run lint",
     "test:base": "tsx --test --test-reporter spec src/**/*.test.ts",
     "test": "npm run test:base",
-    "test:watch": "nodemon -q -e js,cjs,mjs,ts,cts,mts,tsx,yml,json --exec \"npm run test:base\""
+    "test:watch": "nodemon -q -e js,cjs,mjs,ts,cts,mts,tsx,yml,json --exec \"npm run test:base\"",
+    "prepare": "tsup src/llm-adapter.ts --format esm,cjs --dts --minify --clean --silent"
   },
   "dependencies": {
     "@fastify/static": "^6.10.2",
@@ -76,6 +94,7 @@
     "npm-check-updates": "^16.10.12",
     "prettier": "^2.8.8",
     "quicktype-core": "^23.0.37",
+    "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   }
 }
