@@ -89,8 +89,6 @@ const generateConfig = async (llmDefaultConfig) => {
   );
 
   console.log("\n\n📝 Generated config file: llmatic.config.json\n\n");
-
-  return menu();
 };
 
 const downloadModel = async () => {
@@ -125,7 +123,6 @@ const downloadModel = async () => {
   });
 
   await downloadFile(url, fileName);
-  return menu();
 };
 
 const { version } = await readPackageJson();
