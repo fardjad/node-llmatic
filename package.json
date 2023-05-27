@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -31,6 +31,7 @@
     "llmatic.js": "./bin/llmatic.js"
   },
   "files": [
+    "README.md",
     "dist/llm-adapter.cjs",
     "dist/llm-adapter.js",
     "dist/llm-adapter.d.ts",

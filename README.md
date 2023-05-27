@@ -6,6 +6,12 @@
 
 Use self-hosted LLMs with an OpenAI compatible API
 
+<div class="paragraph">
+
+<span class="image"><a href="https://www.npmjs.com/package/llmatic" class="image"><img src="https://img.shields.io/npm/v/llmatic" alt="llmatic" /></a></span> <span class="image"><a href="https://www.npmjs.com/package/llmatic" class="image"><img src="https://img.shields.io/npm/dm/llmatic" alt="llmatic" /></a></span> <span class="image"><a href="https://github.com/fardjad/node-llmatic/actions" class="image"><img src="https://img.shields.io/github/actions/workflow/status/fardjad/node-llmatic/test-and-release.yml?branch=master" alt="test and release" /></a></span>
+
+</div>
+
 </div>
 
 <hr />
