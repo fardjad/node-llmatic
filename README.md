@@ -45,9 +45,11 @@ But I wanted a small, simple, and easy to extend implementation in TypeScript ba
 
 ## How to use
 
-If you prefer a video introduction, you can watch the following video:
+If you prefer a video tutorial, you can watch the following video for step-by-step instructions on how to use this project:
 
-[![LLMatic](https://img.youtube.com/vi/V_baaAZMY44/default.jpg)](https://youtu.be/V_baaAZMY44)
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=V_baaAZMY44" target="_blank">
+<img src="https://img.youtube.com/vi/V_baaAZMY44/hqdefault.jpg" alt="LLMatic" style="min-height: 200px" />
+</a>
 
 ### Requirements
 
