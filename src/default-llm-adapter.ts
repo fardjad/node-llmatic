@@ -11,14 +11,13 @@ import {
   type LlmAdapterModel,
   Role,
 } from "./llm-adapter.ts";
-import type { LlamaInvocation } from "@llama-node/llama-cpp";
+import type { Generate } from "@llama-node/llama-cpp";
 import { type LLMError, LLM as LlamaNode } from "llama-node";
 import { LLamaCpp, type LoadConfig } from "llama-node/dist/llm/llama-cpp.js";
 import { cpus } from "node:os";
 import path from "node:path";
 
-type DefaultLlmAdapterConfig = LoadConfig &
-  LlamaInvocation & { modelPath: string };
+type DefaultLlmAdapterConfig = Generate & LoadConfig;
 
 export default class DefaultLlmAdapter extends LlmAdapter {
   #llmConfig: DefaultLlmAdapterConfig;
@@ -171,17 +170,14 @@ export default class DefaultLlmAdapter extends LlmAdapter {
       | LlmAdapterCreateChatCompletionRequest
   ) {
     return {
-      nTokPredict: Math.max(
-        request.maxTokens ?? 0,
-        this.#llmConfig.nTokPredict
-      ),
+      nTokPredict: request.maxTokens ?? this.#llmConfig.nTokPredict,
       temp: request.temperature ?? this.#llmConfig.temp,
       topP: request.topP ?? this.#llmConfig.topP,
       presencePenalty:
         request.presencePenalty ?? this.#llmConfig.presencePenalty,
       frequencyPenalty:
         request.frequencyPenalty ?? this.#llmConfig.frequencyPenalty,
-    } satisfies Partial<LlamaInvocation>;
+    } satisfies Partial<Generate>;
   }
 
   static get defaultConfig() {
@@ -215,16 +211,13 @@ export default class DefaultLlmAdapter extends LlmAdapter {
     await this.#llamaNode.load({
       ...DefaultLlmAdapter.defaultConfig,
       ...this.#llmConfig,
-
-      // For older versions of @llama-node/llama-cpp
-      path: this.#llmConfig.modelPath,
     });
 
     this.#loaded = true;
   }
 
   async #invokeLlamaNode<T>(
-    invocationConfig: Partial<LlamaInvocation>,
+    invocationConfig: Partial<Generate>,
     callerAbortSignal: AbortSignal,
     onToken: ({
       token,
