@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.29",
+  "version": "0.4.30",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -95,7 +95,7 @@
     "npm-check-updates": "^16.10.13",
     "prettier": "^2.8.8",
     "quicktype-core": "^23.0.48",
-    "tsup": "^7.0.0",
+    "tsup": "^7.1.0",
     "typescript": "^5.1.3"
   }
 }
