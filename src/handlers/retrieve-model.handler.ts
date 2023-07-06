@@ -23,7 +23,7 @@ export default class RetrieveModelHandler implements OperationHandler {
     const { model } = parameters;
     const adapterModels = await this.#llmAdapter.listModels();
     const adapterModel = adapterModels.find(
-      (adapterModel) => adapterModel.id === model
+      (adapterModel) => adapterModel.id === model,
     );
 
     if (!adapterModel) {

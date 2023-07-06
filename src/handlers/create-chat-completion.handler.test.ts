@@ -38,7 +38,7 @@ await test("createChatCompletionHandler", async (t) => {
       async createChatCompletion(
         createChatCompletionRequest,
         abortSignal,
-        callback
+        callback,
       ) {
         const { messages, n } = createChatCompletionRequest;
 
@@ -93,7 +93,7 @@ await test("createChatCompletionHandler", async (t) => {
         topP: createChatCompletionRequest.top_p,
       },
       expect.anything(),
-      expect.anything()
+      expect.anything(),
     );
   });
 });

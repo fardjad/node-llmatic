@@ -24,14 +24,14 @@ const createOpenapiGlueService = async ({ container }: Partial<Cradle>) => {
         default: (...arguments_: any[]) => OperationHandler;
       };
       return container!.build(handlerConstructor);
-    })
+    }),
   );
 
   return Object.fromEntries(
     handlers.map((handler) => [
       handler.operationId,
       handler.handle.bind(handler),
-    ])
+    ]),
   );
 };
 
@@ -102,8 +102,8 @@ const configureSwaggerUi = async ({
   fastifyServer!.get("/", (request, reply) =>
     reply.sendFile(
       "index.html",
-      fileURLToPath(new URL("../public", import.meta.url))
-    )
+      fileURLToPath(new URL("../public", import.meta.url)),
+    ),
   );
 
   fastifyServer!.get("/api.oas.yml", (request, reply) => {
@@ -128,7 +128,7 @@ export const createFastifyServer = async ({ container }: Cradle) => {
   const openapiDocument = yaml.load(
     await fs.promises.readFile(new URL("../api.oas.yml", import.meta.url), {
       encoding: "utf8",
-    })
+    }),
   );
 
   await configureSwaggerUi({ fastifyServer, openapiDocument });

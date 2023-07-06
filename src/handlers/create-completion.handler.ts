@@ -105,7 +105,7 @@ export default class CreateCompletionHandler implements OperationHandler {
             reply,
             this.#createResponseObject(id, model, [
               { finish_reason: finishReason, index, text },
-            ])
+            ]),
           );
 
           return;
@@ -123,7 +123,7 @@ export default class CreateCompletionHandler implements OperationHandler {
         }
 
         choiceTokens[index].push(text);
-      }
+      },
     );
 
     if (stream) {
@@ -156,7 +156,7 @@ export default class CreateCompletionHandler implements OperationHandler {
   #createResponseObject(
     id: string,
     model: string,
-    choices: Choice[]
+    choices: Choice[],
   ): CreateCompletionOkResponse {
     return {
       id,

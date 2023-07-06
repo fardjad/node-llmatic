@@ -76,7 +76,7 @@ export default class CreateChatCompletionHandler implements OperationHandler {
             this.#createResponseChunk(id, model, {
               delta,
               index,
-            })
+            }),
           );
 
           return;
@@ -102,7 +102,7 @@ export default class CreateChatCompletionHandler implements OperationHandler {
         if (delta.content) {
           choiceTokens[index].push(delta.content);
         }
-      }
+      },
     );
 
     if (stream) {
@@ -135,7 +135,7 @@ export default class CreateChatCompletionHandler implements OperationHandler {
   #createResponse(
     id: string,
     model: string,
-    choices: Choice[]
+    choices: Choice[],
   ): CreateChatCompletionOkResponse {
     return {
       id,
@@ -149,7 +149,7 @@ export default class CreateChatCompletionHandler implements OperationHandler {
   #createResponseChunk(
     id: string,
     model: string,
-    deltaChoice: Chunk
+    deltaChoice: Chunk,
   ): CreateChatCompletionOkResponse {
     return {
       id,

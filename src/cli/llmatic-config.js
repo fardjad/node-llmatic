@@ -22,7 +22,7 @@ const downloadFile = (url, fileName) => {
     },
     onProgress(percentage) {
       process.stdout.write(
-        `\r${String(Number(percentage).toFixed(2)).padStart(6, "0")}%`
+        `\r${String(Number(percentage).toFixed(2)).padStart(6, "0")}%`,
       );
     },
   });
@@ -85,7 +85,7 @@ const generateConfig = async (llmDefaultConfig) => {
 
   await fs.promises.writeFile(
     "./llmatic.config.json",
-    JSON.stringify(llmConfig, null, 2)
+    JSON.stringify(llmConfig, null, 2),
   );
 
   console.log("\n\n📝 Generated config file: llmatic.config.json\n\n");

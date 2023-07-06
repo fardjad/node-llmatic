@@ -17,7 +17,7 @@ const typesDirectory = new URL("../src/types", import.meta.url);
 fs.mkdirSync(typesDirectory, { recursive: true });
 
 const oas = yaml.load(
-  fs.readFileSync(new URL("../api.oas.yml", import.meta.url), "utf8")
+  fs.readFileSync(new URL("../api.oas.yml", import.meta.url), "utf8"),
 );
 const resolver = new Resolver();
 const { result: resolvedOas } = await resolver.resolve(oas);
@@ -84,14 +84,14 @@ for (const operationId of operationIds) {
   const responseSources = responseBodySchemaPairs.map(
     ({ statusCode, schema }) => ({
       name: pascalCase(
-        `${operationId} ${getReasonPhrase(statusCode)} Response`
+        `${operationId} ${getReasonPhrase(statusCode)} Response`,
       ),
       schema: JSON.stringify(schema),
-    })
+    }),
   );
 
   const sources = [requestSource, ...responseSources].filter(
-    (source) => source.schema !== undefined
+    (source) => source.schema !== undefined,
   );
 
   const { lines } = await quicktypeJSONSchema(sources);

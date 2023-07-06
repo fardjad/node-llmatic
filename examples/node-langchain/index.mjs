@@ -11,7 +11,7 @@ const model = new OpenAI(
   },
   {
     basePath: "http://localhost:3000/v1",
-  }
+  },
 );
 
 const template = `A chat between a curious user and an artificial intelligence assistant.

@@ -111,7 +111,7 @@ await test("createCompletionHandler", async (t) => {
         topP: createCompletionRequest.top_p,
       },
       expect.anything(),
-      expect.anything()
+      expect.anything(),
     );
   });
 });

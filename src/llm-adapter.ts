@@ -83,12 +83,12 @@ export abstract class LlmAdapter {
   abstract createCompletion(
     createCompletionRequest: LlmAdapterCreateCompletionRequest,
     abortSignal: AbortSignal,
-    onData: (data: LlmAdapterCreateCompletionResponse) => void
+    onData: (data: LlmAdapterCreateCompletionResponse) => void,
   ): Promise<void>;
 
   abstract createChatCompletion(
     createChatCompletionRequest: LlmAdapterCreateChatCompletionRequest,
     abortSignal: AbortSignal,
-    onData: (data: LlmAdapterCreateChatCompletionResponse) => void
+    onData: (data: LlmAdapterCreateChatCompletionResponse) => void,
   ): Promise<void>;
 }
