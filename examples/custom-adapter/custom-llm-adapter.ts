@@ -25,7 +25,7 @@ export default class CustomLlmAdapter extends LlmAdapter {
   async createChatCompletion(
     createChatCompletionRequest: LlmAdapterCreateChatCompletionRequest,
     abortSignal: AbortSignal,
-    onData: (data: LlmAdapterCreateChatCompletionResponse) => void
+    onData: (data: LlmAdapterCreateChatCompletionResponse) => void,
   ): Promise<void> {
     const { messages, n } = createChatCompletionRequest;
 
@@ -62,7 +62,7 @@ export default class CustomLlmAdapter extends LlmAdapter {
   async createCompletion(
     createCompletionRequest: LlmAdapterCreateCompletionRequest,
     abortSignal: AbortSignal,
-    onData: (data: LlmAdapterCreateCompletionResponse) => void
+    onData: (data: LlmAdapterCreateCompletionResponse) => void,
   ): Promise<void> {
     const { prompt, n } = createCompletionRequest;
 

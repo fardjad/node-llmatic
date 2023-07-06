@@ -5,7 +5,7 @@ export const readPackageJson = async () => {
   const packageJsonPath = new URL("../../package.json", import.meta.url);
 
   return JSON.parse(
-    await fs.promises.readFile(packageJsonPath, { encoding: "utf8" })
+    await fs.promises.readFile(packageJsonPath, { encoding: "utf8" }),
   ) as {
     [key: string]: unknown;
 
@@ -21,8 +21,8 @@ export const invokeInDirectory = async <T>(
   directory: string,
   callback: (
     previousWorkingDirectory: string,
-    currentWorkingDirectory: string
-  ) => T
+    currentWorkingDirectory: string,
+  ) => T,
 ) => {
   const cwd = process.cwd();
   process.chdir(directory);
@@ -36,6 +36,6 @@ export const importFile = async <T>(filePath: string): Promise<T> => {
   const resolvedPath = path.resolve(filePath);
   const fileDirectory = path.dirname(resolvedPath);
   return invokeInDirectory(fileDirectory, async () =>
-    import(resolvedPath).then((module) => (module.default ?? module) as T)
+    import(resolvedPath).then((module) => (module.default ?? module) as T),
   );
 };

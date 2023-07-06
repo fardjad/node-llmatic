@@ -33,8 +33,8 @@ export default class CreateEmbeddingHandler implements OperationHandler {
         this.#llmAdapter.createEmbedding({
           input,
           model,
-        })
-      )
+        }),
+      ),
     );
 
     const data: Datum[] = embeddings.map((embedding, index) => ({

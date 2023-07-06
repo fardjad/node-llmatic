@@ -6,5 +6,5 @@ childProcess.fork(
   process.argv.slice(2),
   {
     execArgv: ["--no-warnings", "--loader", "tsx"],
-  }
+  },
 );

@@ -35,11 +35,11 @@ await test("invokeInDirectory", async (t) => {
           assert.strictEqual(currentWorkingDirectory, process.cwd());
 
           return process.cwd();
-        }
+        },
       );
       assert.strictEqual(process.cwd(), cwd);
       assert.strictEqual(result, newPath);
-    }
+    },
   );
 
   await t.test("should await promises before returning a result", async () => {
@@ -62,7 +62,7 @@ await test("invokeInDirectory", async (t) => {
 
 await test("importFile", async () => {
   const importedModule = await cliUtils.importFile<typeof cliUtils>(
-    fileURLToPath(new URL("cli-utils.ts", import.meta.url))
+    fileURLToPath(new URL("cli-utils.ts", import.meta.url)),
   );
   assert.strictEqual(importedModule, cliUtils);
 });

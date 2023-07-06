@@ -30,7 +30,7 @@ export type ContainerRegistration = {
 
 export const applyOverrides = (
   registrations: ContainerRegistration[],
-  registrationOverrides: ContainerRegistration[]
+  registrationOverrides: ContainerRegistration[],
 ) => {
   const registrationOverridesCopy = [...registrationOverrides];
 
@@ -38,7 +38,7 @@ export const applyOverrides = (
 
   for (const { token, resolver } of registrations) {
     const overrideIndex = registrationOverridesCopy.findIndex(
-      (override) => override.token === token
+      (override) => override.token === token,
     );
     if (overrideIndex === -1) {
       result.push({ token, resolver });
@@ -60,7 +60,7 @@ export const applyOverrides = (
  * are supported (can be useful for testing).
  */
 export const createContainer = async (
-  registerationOverrides: ContainerRegistration[] = []
+  registerationOverrides: ContainerRegistration[] = [],
 ) => {
   const container = awilix.createContainer<Cradle>({
     injectionMode: awilix.InjectionMode.PROXY,
@@ -97,7 +97,7 @@ export const createContainer = async (
 
   const newRegistrations = applyOverrides(
     orderedRegistrations,
-    registerationOverrides
+    registerationOverrides,
   );
 
   for (const { token, resolver } of newRegistrations) {

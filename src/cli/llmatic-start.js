@@ -13,15 +13,15 @@ program
   .description("Start LLMatic server")
   .addOption(
     new Option("-c, --config [path]", "config file path").default(
-      "llmatic.config.json"
-    )
+      "llmatic.config.json",
+    ),
   )
   .addOption(llmAdapterOption)
   .addOption(
-    new Option("-p --port [port]", "port to listen on").default("3000")
+    new Option("-p --port [port]", "port to listen on").default("3000"),
   )
   .addOption(
-    new Option("-h --host [port]", "host to listen on").default("localhost")
+    new Option("-h --host [port]", "host to listen on").default("localhost"),
   )
   .action(
     async ({
@@ -36,7 +36,7 @@ program
       }
 
       const llmConfig = JSON.parse(
-        await fs.promises.readFile(configFilePath, "utf8")
+        await fs.promises.readFile(configFilePath, "utf8"),
       );
 
       const container = await createContainer([
@@ -57,7 +57,7 @@ program
       ]);
       const fastifyServer = container.resolve(diTokens.fastifyServer);
       await fastifyServer.listen({ port: Number(port), host });
-    }
+    },
   );
 
 await program.parseAsync(process.argv);
