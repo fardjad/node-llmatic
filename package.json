@@ -97,5 +97,10 @@
     "quicktype-core": "^23.0.49",
     "tsup": "^7.1.0",
     "typescript": "^5.1.6"
+  },
+  "overrides": {
+    "@trivago/prettier-plugin-sort-imports": {
+      "prettier": ">=3"
+    }
   }
 }
