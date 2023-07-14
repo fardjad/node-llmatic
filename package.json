@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.44",
+  "version": "0.4.45",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -56,10 +56,10 @@
   },
   "dependencies": {
     "@fastify/static": "^6.10.2",
-    "@inquirer/prompts": "^2.3.0",
-    "@inquirer/select": "^1.2.3",
+    "@inquirer/prompts": "^2.3.1",
+    "@inquirer/select": "^1.2.4",
     "@llama-node/llama-cpp": "^0.1.6",
-    "@stoplight/json-ref-resolver": "^3.1.5",
+    "@stoplight/json-ref-resolver": "^3.1.6",
     "ajv": "^8.12.0",
     "awilix": "^8.0.1",
     "commander": "^11.0.0",
