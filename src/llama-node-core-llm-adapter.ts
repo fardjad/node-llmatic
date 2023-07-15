@@ -12,7 +12,7 @@ import {
   Role,
 } from "./llm-adapter.ts";
 import { type Generate, ModelType } from "@llama-node/core";
-import { type LLMError, LLM as LlamaNode } from "llama-node";
+import { type LLMError, LLM as LlamaNode, LLMErrorType } from "llama-node";
 import { LLMRS, type LoadConfig } from "llama-node/dist/llm/llm-rs.js";
 import { cpus } from "node:os";
 import path from "node:path";
@@ -279,7 +279,7 @@ export default class LlamaNodeCoreLlmAdapter extends LlmAdapter {
         }
 
         const llmError = error as LLMError;
-        if (llmError.type !== "Aborted") {
+        if (llmError.type !== LLMErrorType.Aborted) {
           throw llmError;
         }
       })
