@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.81",
+  "version": "0.4.82",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -55,7 +55,7 @@
     "prepare": "tsup src/llm-adapter.ts --format esm,cjs --dts --minify --clean --silent"
   },
   "dependencies": {
-    "@fastify/static": "^6.10.2",
+    "@fastify/static": "^6.11.0",
     "@inquirer/prompts": "^3.0.4",
     "@inquirer/select": "^1.2.9",
     "@llama-node/llama-cpp": "^0.1.6",
@@ -63,7 +63,7 @@
     "ajv": "^8.12.0",
     "awilix": "^8.0.1",
     "commander": "^11.0.0",
-    "fastify": "^4.22.1",
+    "fastify": "^4.22.2",
     "fastify-openapi-glue": "^4.3.2",
     "glob": "^10.3.4",
     "llama-node": "^0.1.6",
@@ -71,13 +71,13 @@
     "short-uuid": "^4.2.2",
     "swagger-ui-dist": "^5.4.2",
     "traverse": "^0.6.7",
-    "tsx": "^3.12.7",
+    "tsx": "^3.12.8",
     "valid-filename": "^4.0.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.5.8",
     "@types/swagger-ui-dist": "^3.30.1",
     "@types/traverse": "^0.6.32",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
