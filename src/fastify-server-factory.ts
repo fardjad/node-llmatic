@@ -1,7 +1,7 @@
 import type { Cradle } from "./container.ts";
 import type { OperationHandler } from "./operation-handler.ts";
 import fastifyStatic from "@fastify/static";
-import Ajv from "ajv";
+import ajvModule from "ajv";
 import fastify from "fastify";
 import openapiGlue from "fastify-openapi-glue";
 import { glob } from "glob";
@@ -10,6 +10,10 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import swaggerUiDist from "swagger-ui-dist";
 import traverse from "traverse";
+
+// https://github.com/ajv-validator/ajv/issues/2132
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const Ajv = ajvModule.default;
 
 // FIXME: fix the types
 const createOpenapiGlueService = async ({ container }: Partial<Cradle>) => {
@@ -53,7 +57,9 @@ const configureOpenapiGlue = async ({
       throw new Error("Missing httpPart");
     }
 
-    const compiler = schemaCompilers[request.httpPart] as Ajv | undefined;
+    const compiler = schemaCompilers[request.httpPart] as
+      | ajvModule.default
+      | undefined;
     if (!compiler) {
       throw new Error(`Missing compiler for ${request.httpPart}`);
     }
