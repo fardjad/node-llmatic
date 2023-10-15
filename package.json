@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.118",
+  "version": "0.4.119",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -64,7 +64,7 @@
     "awilix": "^9.0.0",
     "commander": "^11.1.0",
     "fastify": "^4.24.1",
-    "fastify-openapi-glue": "^4.4.1",
+    "fastify-openapi-glue": "^4.4.2",
     "glob": "^10.3.10",
     "llama-node": "^0.1.6",
     "nodejs-file-downloader": "^4.12.1",
