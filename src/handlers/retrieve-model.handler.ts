@@ -11,7 +11,7 @@ type RequestParameters = {
 
 export default class RetrieveModelHandler implements OperationHandler {
   operationId = "retrieveModel";
-  #llmAdapter: LlmAdapter;
+  readonly #llmAdapter: LlmAdapter;
 
   constructor({ llmAdapter }: Cradle) {
     this.#llmAdapter = llmAdapter;
