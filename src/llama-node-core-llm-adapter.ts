@@ -20,9 +20,9 @@ import path from "node:path";
 type LlamaNodeCoreLlmAdapterConfig = LoadConfig & Generate;
 
 export default class LlamaNodeCoreLlmAdapter extends LlmAdapter {
-  #llmConfig: LlamaNodeCoreLlmAdapterConfig;
+  readonly #llmConfig: LlamaNodeCoreLlmAdapterConfig;
   #loaded = false;
-  #llamaNode = new LlamaNode(LLMRS);
+  readonly #llamaNode = new LlamaNode(LLMRS);
 
   constructor(llmConfig: LlamaNodeCoreLlmAdapterConfig) {
     super();

@@ -19,8 +19,8 @@ type Chunk = Choice & {
 export default class CreateChatCompletionHandler implements OperationHandler {
   operationId = "createChatCompletion";
 
-  #llmAdapter: LlmAdapter;
-  #sseHelper: SseHelper;
+  readonly #llmAdapter: LlmAdapter;
+  readonly #sseHelper: SseHelper;
 
   constructor({ llmAdapter, sseHelper }: Cradle) {
     this.#llmAdapter = llmAdapter;

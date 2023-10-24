@@ -10,7 +10,7 @@ import type { RouteHandlerMethod } from "fastify";
 
 export default class ListModelsHandler implements OperationHandler {
   operationId = "listModels";
-  #llmAdapter: LlmAdapter;
+  readonly #llmAdapter: LlmAdapter;
 
   constructor({ llmAdapter }: Cradle) {
     this.#llmAdapter = llmAdapter;

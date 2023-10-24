@@ -13,8 +13,8 @@ import shortUUID from "short-uuid";
 
 export default class CreateCompletionHandler implements OperationHandler {
   operationId = "createCompletion";
-  #llmAdapter: LlmAdapter;
-  #sseHelper: SseHelper;
+  readonly #llmAdapter: LlmAdapter;
+  readonly #sseHelper: SseHelper;
 
   constructor({ llmAdapter, sseHelper }: Cradle) {
     this.#llmAdapter = llmAdapter;

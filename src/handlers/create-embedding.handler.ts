@@ -11,7 +11,7 @@ import type { RouteHandlerMethod } from "fastify";
 
 export default class CreateEmbeddingHandler implements OperationHandler {
   operationId = "createEmbedding";
-  #llmAdapter: LlmAdapter;
+  readonly #llmAdapter: LlmAdapter;
 
   constructor({ llmAdapter }: Cradle) {
     this.#llmAdapter = llmAdapter;
