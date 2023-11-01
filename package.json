@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.130",
+  "version": "0.4.131",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -77,7 +77,7 @@
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.1",
     "@types/js-yaml": "^4.0.8",
-    "@types/node": "^20.8.9",
+    "@types/node": "^20.8.10",
     "@types/swagger-ui-dist": "^3.30.3",
     "@types/traverse": "^0.6.34",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
