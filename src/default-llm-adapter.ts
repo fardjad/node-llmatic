@@ -12,7 +12,7 @@ import {
   Role,
 } from "./llm-adapter.ts";
 import type { Generate } from "@llama-node/llama-cpp";
-import { type LLMError, LLM as LlamaNode, LLMErrorType } from "llama-node";
+import { type LLMError, LLM as LlamaNode } from "llama-node";
 import { LLamaCpp, type LoadConfig } from "llama-node/dist/llm/llama-cpp.js";
 import { cpus } from "node:os";
 import path from "node:path";
@@ -33,7 +33,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
   async createChatCompletion(
     createChatCompletionRequest: LlmAdapterCreateChatCompletionRequest,
     abortSignal: AbortSignal,
-    onData: (data: LlmAdapterCreateChatCompletionResponse) => void,
+    onData: (data: LlmAdapterCreateChatCompletionResponse) => void
   ): Promise<void> {
     await this.#load();
 
@@ -65,7 +65,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
       await this.#invokeLlamaNode(
         {
           ...this.#openAiCompletionRequestToLlamaNodeInvocation(
-            createChatCompletionRequest,
+            createChatCompletionRequest
           ),
           prompt,
         },
@@ -103,7 +103,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
             delta: {},
             finishReason: "stop",
           });
-        },
+        }
       );
     }
   }
@@ -133,7 +133,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
   async createCompletion(
     createCompletionRequest: LlmAdapterCreateCompletionRequest,
     abortSignal: AbortSignal,
-    onData: (data: LlmAdapterCreateCompletionResponse) => void,
+    onData: (data: LlmAdapterCreateCompletionResponse) => void
   ): Promise<void> {
     await this.#load();
 
@@ -148,7 +148,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
       await this.#invokeLlamaNode(
         {
           ...this.#openAiCompletionRequestToLlamaNodeInvocation(
-            createCompletionRequest,
+            createCompletionRequest
           ),
           prompt,
         },
@@ -159,7 +159,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
             text: token,
             finishReason,
           });
-        },
+        }
       );
     }
   }
@@ -167,7 +167,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
   #openAiCompletionRequestToLlamaNodeInvocation(
     request:
       | LlmAdapterCreateCompletionRequest
-      | LlmAdapterCreateChatCompletionRequest,
+      | LlmAdapterCreateChatCompletionRequest
   ) {
     return {
       nTokPredict: request.maxTokens ?? this.#llmConfig.nTokPredict,
@@ -228,7 +228,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
       finishReason: FinishReason;
       stop: () => void;
     }) => void,
-    onComplete?: () => void,
+    onComplete?: () => void
   ) {
     let tokensGenerated = 0;
     const abortController = new AbortController();
@@ -266,7 +266,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
 
           onToken({ token, finishReason, stop });
         },
-        abortController.signal,
+        abortController.signal
       )
       .catch((error: unknown) => {
         // Looks like LLMError is not exported as a Class
@@ -275,7 +275,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
         }
 
         const llmError = error as LLMError;
-        if (llmError.type !== LLMErrorType.Aborted) {
+        if (llmError.type !== ("Aborted" as LLMError["type"])) {
           throw llmError;
         }
       })
