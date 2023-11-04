@@ -30,6 +30,14 @@ Supported endpoints:
 This project is currently a work in progress. At this point, it's recommended
 to use it only for ad-hoc development and testing.
 
+## Help Wanted
+
+I'm looking for contributors to help me with the [open issues](https://github.com/fardjad/node-llmatic/issues). If you're interested, please leave a comment on the issue
+you want to work on.
+
+Also, if you have any good ideas for improving this project, please open an
+issue to discuss it further.
+
 ## Motivation
 
 The main motivation behind making LLMatic was to experiment with OpenAI's API
