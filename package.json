@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.140",
+  "version": "0.4.141",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -69,7 +69,7 @@
     "llama-node": "^0.1.6",
     "nodejs-file-downloader": "^4.12.1",
     "short-uuid": "^4.2.2",
-    "swagger-ui-dist": "^5.9.3",
+    "swagger-ui-dist": "^5.9.4",
     "traverse": "^0.6.7",
     "tsx": "^4.1.1",
     "valid-filename": "^4.0.0"
@@ -80,8 +80,8 @@
     "@types/node": "^20.9.0",
     "@types/swagger-ui-dist": "^3.30.4",
     "@types/traverse": "^0.6.35",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "@typescript-eslint/parser": "^6.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
     "change-case": "^5.1.2",
     "earl": "^1.1.0",
     "eslint": "^8.53.0",
@@ -93,8 +93,8 @@
     "jsonpath-plus": "^7.2.0",
     "nodemon": "^3.0.1",
     "npm-check-updates": "^16.14.6",
-    "prettier": "^3.0.3",
-    "quicktype-core": "^23.0.77",
+    "prettier": "^3.1.0",
+    "quicktype-core": "^23.0.78",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },
