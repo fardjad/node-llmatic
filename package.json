@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.141",
+  "version": "0.4.142",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -71,7 +71,7 @@
     "short-uuid": "^4.2.2",
     "swagger-ui-dist": "^5.9.4",
     "traverse": "^0.6.7",
-    "tsx": "^4.1.1",
+    "tsx": "^4.1.2",
     "valid-filename": "^4.0.0"
   },
   "devDependencies": {
