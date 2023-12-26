@@ -61,14 +61,14 @@ const menu = async (llmDefaultConfig) => {
 
 const generateConfig = async (llmDefaultConfig) => {
   const files = await fs.promises.readdir("./models");
-  const binFiles = files.filter((file) => path.extname(file) === ".gguf");
+  const ggufFiles = files.filter((file) => path.extname(file) === ".gguf");
 
-  if (binFiles.length === 0) {
+  if (ggufFiles.length === 0) {
     console.log("\n\n❌ No models found in ./models\n\n");
     return menu();
   }
 
-  const choices = binFiles.map((file) => ({
+  const choices = ggufFiles.map((file) => ({
     value: file,
   }));
 
