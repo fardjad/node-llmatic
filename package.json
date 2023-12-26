@@ -67,6 +67,7 @@
     "fastify-openapi-glue": "^4.4.2",
     "glob": "^10.3.10",
     "llama-node": "^0.1.6",
+    "node-llama-cpp": "^2.8.3",
     "nodejs-file-downloader": "^4.12.1",
     "short-uuid": "^4.2.2",
     "swagger-ui-dist": "^5.10.5",
