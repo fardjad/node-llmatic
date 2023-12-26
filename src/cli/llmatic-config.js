@@ -61,7 +61,7 @@ const menu = async (llmDefaultConfig) => {
 
 const generateConfig = async (llmDefaultConfig) => {
   const files = await fs.promises.readdir("./models");
-  const binFiles = files.filter((file) => path.extname(file) === ".bin");
+  const binFiles = files.filter((file) => path.extname(file) === ".gguf");
 
   if (binFiles.length === 0) {
     console.log("\n\n❌ No models found in ./models\n\n");
@@ -93,7 +93,7 @@ const generateConfig = async (llmDefaultConfig) => {
 
 const downloadModel = async () => {
   const url = await input({
-    message: "Enter the model URL (the full address to a GGML .bin file):",
+    message: "Enter the model URL (the full address to a GGUF .gguf file):",
     validate(value) {
       try {
         // eslint-disable-next-line no-new
@@ -114,8 +114,8 @@ const downloadModel = async () => {
         return "Please enter a valid file name";
       }
 
-      if (path.extname(value) !== ".bin") {
-        return "File name must end with .bin";
+      if (path.extname(value) !== ".gguf") {
+        return "File name must end with .gguf";
       }
 
       return true;
