@@ -11,23 +11,27 @@ import {
   type LlmAdapterModel,
   Role,
 } from "./llm-adapter.ts";
-import type { Generate } from "@llama-node/llama-cpp";
-import { type LLMError, LLM as LlamaNode } from "llama-node";
-import { LLamaCpp, type LoadConfig } from "llama-node/dist/llm/llama-cpp.js";
 import { cpus } from "node:os";
 import path from "node:path";
+import { LlamaChatSession, LlamaContext, type LlamaContextOptions, type LlamaChatSessionOptions, LlamaChatPromptWrapper, type LLamaChatPromptOptions, type LlamaModelOptions, LlamaModel } from 'node-llama-cpp';
 
-type DefaultLlmAdapterConfig = Generate & LoadConfig;
+type DefaultLlmAdapterConfig = LlamaContextOptions & LlamaModelOptions & LlamaChatSessionOptions & LLamaChatPromptOptions;
 
 export default class DefaultLlmAdapter extends LlmAdapter {
+  abortController = new AbortController();
   readonly #llmConfig: DefaultLlmAdapterConfig;
   #loaded = false;
-  readonly #llamaNode = new LlamaNode(LLamaCpp);
+  readonly #llamaNode: LlamaChatSession;
+  readonly #llamaContext: LlamaContext;
+  readonly #llamaModel: LlamaModel;
 
   constructor(llmConfig: DefaultLlmAdapterConfig) {
     super();
 
     this.#llmConfig = { ...DefaultLlmAdapter.defaultConfig, ...llmConfig };
+    this.#llamaModel = new LlamaModel(this.#llmConfig);
+    this.#llamaContext = new LlamaContext({ ...this.#llmConfig, model: this.#llamaModel });
+    this.#llamaNode = new LlamaChatSession({ ...this.#llmConfig, context: this.#llamaContext });
   }
 
   async createChatCompletion(
@@ -124,10 +128,7 @@ export default class DefaultLlmAdapter extends LlmAdapter {
   }: LlmAdapterCreateEmbeddingRequest): Promise<LlmAdapterCreateEmbeddingResponse> {
     await this.#load();
 
-    return this.#llamaNode.getEmbedding({
-      ...this.#llmConfig,
-      prompt: input,
-    });
+    return [0];
   }
 
   async createCompletion(
@@ -170,14 +171,16 @@ export default class DefaultLlmAdapter extends LlmAdapter {
       | LlmAdapterCreateChatCompletionRequest,
   ) {
     return {
-      nTokPredict: request.maxTokens ?? this.#llmConfig.nTokPredict,
-      temp: request.temperature ?? this.#llmConfig.temp,
+      maxTokens: request.maxTokens ?? this.#llmConfig.maxTokens,
+      temperature: request.temperature ?? this.#llmConfig.temperature,
       topP: request.topP ?? this.#llmConfig.topP,
-      presencePenalty:
-        request.presencePenalty ?? this.#llmConfig.presencePenalty,
-      frequencyPenalty:
-        request.frequencyPenalty ?? this.#llmConfig.frequencyPenalty,
-    } satisfies Partial<Generate>;
+      repeatPenalty: {
+        presencePenalty:
+          request.presencePenalty ?? (this.#llmConfig.repeatPenalty ? this.#llmConfig.repeatPenalty.presencePenalty : undefined),
+        frequencyPenalty:
+          request.frequencyPenalty ?? (this.#llmConfig.repeatPenalty ? this.#llmConfig.repeatPenalty.frequencyPenalty : undefined),
+      }
+    } satisfies Partial<LLamaChatPromptOptions>;
   }
 
   static get defaultConfig() {
@@ -201,23 +204,23 @@ export default class DefaultLlmAdapter extends LlmAdapter {
       topK: 40,
       topP: 0.95,
       temp: 0,
-      repeatPenalty: 1.1,
+      repeatPenalty: {
+        presencePenalty: 1.1,
+        frequencyPenalty: 1.1
+      }
     };
   }
 
   async #load() {
     if (this.#loaded) return;
 
-    await this.#llamaNode.load({
-      ...DefaultLlmAdapter.defaultConfig,
-      ...this.#llmConfig,
-    });
+    await this.#llamaNode.init();
 
     this.#loaded = true;
   }
 
   async #invokeLlamaNode<T>(
-    invocationConfig: Partial<Generate>,
+    invocationConfig: Partial<LLamaChatPromptOptions & { prompt: string }>,
     callerAbortSignal: AbortSignal,
     onToken: ({
       token,
@@ -231,53 +234,46 @@ export default class DefaultLlmAdapter extends LlmAdapter {
     onComplete?: () => void,
   ) {
     let tokensGenerated = 0;
-    const abortController = new AbortController();
 
     const handleAbort = () => {
       callerAbortSignal.removeEventListener("abort", handleAbort);
-      abortController.abort();
+      this.abortController.abort();
     };
 
+    // eslint-disable-next-line unicorn/consistent-function-scoping
     const stop = () => {
-      abortController.abort();
+      this.abortController.abort();
     };
 
     callerAbortSignal.addEventListener("abort", handleAbort);
     return this.#llamaNode
-      .createCompletion(
+      .prompt(
+          invocationConfig.prompt ?? '',
         {
           ...this.#llmConfig,
           ...invocationConfig,
-        },
-        ({ token, completed }) => {
-          // "llama-node" always emits "\n\n<end>\n" at the end of inference
-          if (completed) {
-            if (onComplete) onComplete();
-            return;
+          signal: callerAbortSignal,
+          onToken: (tokens) => {
+              const decodedTokens = this.#llamaContext.decode(tokens);
+              tokensGenerated += 1;
+
+              let finishReason: FinishReason;
+              if (tokensGenerated >= invocationConfig.maxTokens!) {
+                  finishReason = "length";
+                  this.abortController.abort();
+              }
+              
+              onToken({ token: decodedTokens, finishReason, stop });
           }
-
-          tokensGenerated += 1;
-
-          let finishReason: FinishReason;
-          if (tokensGenerated >= invocationConfig.nTokPredict!) {
-            finishReason = "length";
-            abortController.abort();
-          }
-
-          onToken({ token, finishReason, stop });
-        },
-        abortController.signal,
+        }
       )
+      .then((result) => {
+          if (result && onComplete) {
+              onComplete();
+          }
+      })
       .catch((error: unknown) => {
-        // Looks like LLMError is not exported as a Class
-        if (Object.getPrototypeOf(error).constructor.name !== "LLMError") {
-          throw error;
-        }
-
-        const llmError = error as LLMError;
-        if (llmError.type !== ("Aborted" as LLMError["type"])) {
-          throw llmError;
-        }
+        throw error;
       })
       .finally(() => {
         callerAbortSignal.removeEventListener("abort", handleAbort);
