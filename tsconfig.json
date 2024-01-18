@@ -7,7 +7,7 @@
     "allowImportingTsExtensions": true,
     "strictNullChecks": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   },
-  "exclude": ["examples/**/*"]
+  "exclude": ["examples/**/*"],
 }
