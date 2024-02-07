@@ -111,16 +111,12 @@ export default class CreateCompletionHandler implements OperationHandler {
           return;
         }
 
-        if (choices[index] == null) {
-          choices[index] = {
+        choices[index] ??= {
             index,
           };
-        }
 
         choices[index].finish_reason = finishReason;
-        if (choiceTokens[index] == null) {
-          choiceTokens[index] = [];
-        }
+        choiceTokens[index] ??= [];
 
         choiceTokens[index].push(text);
       },

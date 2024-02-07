@@ -82,12 +82,10 @@ export default class CreateChatCompletionHandler implements OperationHandler {
           return;
         }
 
-        if (choices[index] == null) {
-          choices[index] = {
+        choices[index] ??= {
             index,
             message: { role: Role.Assistant, content: "" },
           };
-        }
 
         choices[index].finish_reason = finishReason;
 
@@ -95,9 +93,7 @@ export default class CreateChatCompletionHandler implements OperationHandler {
           choices[index].message!.role = delta.role;
         }
 
-        if (choiceTokens[index] == null) {
-          choiceTokens[index] = [];
-        }
+        choiceTokens[index] ??= [];
 
         if (delta.content) {
           choiceTokens[index].push(delta.content);
