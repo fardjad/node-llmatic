@@ -83,9 +83,9 @@ export default class CreateChatCompletionHandler implements OperationHandler {
         }
 
         choices[index] ??= {
-            index,
-            message: { role: Role.Assistant, content: "" },
-          };
+          index,
+          message: { role: Role.Assistant, content: "" },
+        };
 
         choices[index].finish_reason = finishReason;
 

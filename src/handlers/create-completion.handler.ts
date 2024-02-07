@@ -112,8 +112,8 @@ export default class CreateCompletionHandler implements OperationHandler {
         }
 
         choices[index] ??= {
-            index,
-          };
+          index,
+        };
 
         choices[index].finish_reason = finishReason;
         choiceTokens[index] ??= [];
@@ -134,7 +134,7 @@ export default class CreateCompletionHandler implements OperationHandler {
       }
 
       choice.text = choiceTokens[index].join("");
-      choice.finish_reason = choice.finish_reason ?? "stop";
+      choice.finish_reason ??= "stop";
     }
 
     const response: CreateCompletionOkResponse = {
