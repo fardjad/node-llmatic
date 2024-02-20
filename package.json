@@ -1,6 +1,6 @@
 {
   "name": "llmatic",
-  "version": "0.4.213",
+  "version": "0.4.214",
   "description": "Use self-hosted LLMs with an OpenAI compatible API",
   "exports": {
     "./llm-adapter": {
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@fastify/static": "^7.0.1",
-    "@inquirer/prompts": "^4.0.0",
+    "@inquirer/prompts": "^4.1.0",
     "@inquirer/select": "^2.0.0",
     "@llama-node/llama-cpp": "^0.1.6",
     "@stoplight/json-ref-resolver": "^3.1.6",
@@ -80,8 +80,8 @@
     "@types/node": "^20.11.19",
     "@types/swagger-ui-dist": "^3.30.4",
     "@types/traverse": "^0.6.36",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
     "change-case": "^5.4.3",
     "earl": "^1.1.0",
     "eslint": "^8.56.0",
