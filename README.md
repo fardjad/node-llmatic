@@ -16,9 +16,21 @@ Use self-hosted LLMs with an OpenAI compatible API
 
 <hr />
 
-LLMatic can be used as a drop-in replacement for OpenAI's API (see the
-supported endpoints). It uses [llama-node](https://github.com/Atome-FE/llama-node)
-with [llama.cpp](https://github.com/ggerganov/llama.cpp) backend to run the models locally.
+## Project status
+
+This project was the result of my curiousity and experimentation with OpenAI's API and I enjoyed building it. It is certainly not the first nor the last project of its kind. Given my limited time and resources, I'd like to pause the development of this project for now. I'll list some other similar projects below that can be used as alternatives:
+
+1. [Ollama](https://github.com/ollama/ollama/blob/main/docs/openai.md)
+2. [LLaMA.cpp HTTP Server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server)
+3. [GPT4All Chat Server Mode](https://docs.gpt4all.io/gpt4all_chat.html#gpt4all-chat-server-mode)
+4. [FastChat](https://github.com/lm-sys/FastChat/blob/main/docs/openai_api.md)
+
+
+## Synopsis
+
+LLMatic can be used as a drop-in replacement for OpenAI's API [v1.2.0](https://github.com/openai/openai-openapi/blob/88f221442879061d9970ed453a65b973d226f15d/openapi.yaml) (see the
+supported endpoints). By default, it uses [llama-node](https://github.com/Atome-FE/llama-node)
+with [llama.cpp](https://github.com/ggerganov/llama.cpp) backend to run the models locally. However, you can easily create [your own adapter](#custom-adapters) to use any other model or service.
 
 Supported endpoints:
 
@@ -26,30 +38,6 @@ Supported endpoints:
 - [x] /chat/completions (stream and non-stream)
 - [x] /embeddings
 - [x] /models
-
-This project is currently a work in progress. At this point, it's recommended
-to use it only for ad-hoc development and testing.
-
-## Help Wanted
-
-I'm looking for contributors to help me with the [open issues](https://github.com/fardjad/node-llmatic/issues). If you're interested, please leave a comment on the issue
-you want to work on.
-
-Also, if you have any good ideas for improving this project, please open an
-issue to discuss it further.
-
-## Motivation
-
-The main motivation behind making LLMatic was to experiment with OpenAI's API
-without worrying about the cost. I have seen other attempts at creating
-OpenAI-Compatible APIs such as:
-
-1. [FastChat](https://github.com/lm-sys/FastChat/blob/main/docs/openai_api.md)
-2. [GPT4All Chat Server Mode](https://docs.gpt4all.io/gpt4all_chat.html#gpt4all-chat-server-mode)
-3. [simpleAI](https://github.com/lhenault/simpleAI)
-
-But I wanted a small, simple, and easy to extend implementation in TypeScript based on the
-[official OpenAI API specification](https://github.com/openai/openai-openapi/blob/master/openapi.yaml).
 
 ## How to use
 
